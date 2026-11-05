@@ -1,6 +1,7 @@
 /* ========================================================
-   TG-07 SOLID HARDWARE SYNTHESIZER CHASSIS
-   FULL-VIEWPORT (100VW / 100VH) EDGE-TO-EDGE INSTRUMENT
+   DIETER RAMS / BRAUN INDUSTRIAL DESIGN SYSTEM
+   TG-07 POLYPHONIC GLIDE INSTRUMENT
+   "WENIGER, ABER BESSER" (LESS, BUT BETTER)
    ======================================================== */
 :root {
   --chassis-bg: #e6e3db;
@@ -10,8 +11,8 @@
   --chassis-highlight: #f5f3ee;
 
   --ink-primary: #1f1f1d;
-  --ink-secondary: #5a5852;
-  --ink-muted: #7d7a72;
+  --ink-secondary: #54524c;
+  --ink-muted: #78756d;
 
   --crt-bg: #141614;
   --crt-surface: #1b1e1b;
@@ -20,7 +21,7 @@
   --signal-orange: #ea5b0c;
   --signal-orange-dark: #c44704;
   --signal-amber: #f5b73b;
-  --signal-green: #4ba353;
+  --signal-green: #4ce05b;
   --key-ivory: #f1efe9;
   --key-charcoal: #2c2c29;
 }
@@ -33,7 +34,6 @@
   -webkit-user-select: none;
 }
 
-/* Edge-to-Edge Full Viewport: zero wasted space */
 html, body {
   width: 100vw;
   height: 100vh;
@@ -44,7 +44,7 @@ html, body {
   background-color: #dedad0;
   color: var(--ink-primary);
   font-family: "Helvetica Neue", -apple-system, BlinkMacSystemFont, "Inter", Arial, sans-serif;
-  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
   -webkit-touch-callout: none;
 }
 
@@ -52,34 +52,32 @@ html, body {
   width: 100vw;
   height: 100vh;
   height: 100dvh;
-  max-width: none;
   background: linear-gradient(180deg, #eae7df 0%, #dedad0 100%);
-  padding: 8px 12px 0;
+  padding: 10px 16px 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 6px;
-  box-sizing: border-box;
+  gap: 8px;
   position: relative;
 }
 
 /* --------------------------------------------------------
-   TOP HEADER PLATE: Brand Badge, Speaker Grille, Status
+   TOP HEADER PLATE: Brand Designation, Grille, Transport
    -------------------------------------------------------- */
 .top-plate {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 6px;
+  padding-bottom: 7px;
   border-bottom: 2px solid var(--chassis-border);
   flex-shrink: 0;
-  gap: 8px;
+  gap: 12px;
 }
 
 .brand-block {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 18px;
 }
 
 .model-title {
@@ -87,7 +85,7 @@ html, body {
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--ink-primary);
-  line-height: 1;
+  line-height: 1.05;
 }
 
 .model-title span {
@@ -95,26 +93,27 @@ html, body {
   font-size: 11px;
   letter-spacing: 0.12em;
   color: var(--ink-secondary);
-  margin-left: 6px;
+  margin-left: 7px;
 }
 
 .speaker-grille {
   display: grid;
   grid-template-columns: repeat(9, 5px);
   grid-template-rows: repeat(2, 5px);
-  gap: 3px;
-  padding: 4px 7px;
+  gap: 4px;
+  padding: 5px 8px;
   background: var(--chassis-well);
-  border-radius: 4px;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  border: 1px solid var(--chassis-border);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.18);
 }
 
 .speaker-grille span {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #33322e;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.8);
+  background: #2f2e2a;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.85);
 }
 
 .transport-cluster {
@@ -127,12 +126,12 @@ html, body {
 .status-pill {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   background: var(--chassis-panel);
   border: 1px solid var(--chassis-border);
   border-radius: 4px;
-  padding: 4px 8px;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.08);
+  padding: 5px 9px;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.07);
 }
 
 .status-led {
@@ -141,35 +140,43 @@ html, body {
   border-radius: 50%;
   background: #77746b;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.45);
+  flex-shrink: 0;
 }
 
 .status-led.led-on-green {
-  background: #4ce05b;
+  background: var(--signal-green);
   box-shadow: 0 0 7px rgba(76, 224, 91, 0.85);
 }
 
 .status-label {
   font-family: "JetBrains Mono", "SF Mono", monospace;
-  font-size: 9px;
+  font-size: 9.5px;
   font-weight: 600;
   letter-spacing: 0.06em;
   color: var(--ink-secondary);
+  white-space: nowrap;
 }
 
 .rams-help-btn {
   display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 5px 10px;
+  gap: 6px;
+  padding: 5px 11px;
   border-radius: 4px;
   border: 1px solid #8a867b;
   background: var(--key-ivory);
   color: var(--ink-primary);
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   cursor: pointer;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 1px 0 #fff;
+  transition: border-color 0.1s ease, background-color 0.1s ease;
+}
+
+.rams-help-btn:hover {
+  background: #fdfdfc;
+  border-color: var(--ink-primary);
 }
 
 .rams-help-btn:active {
@@ -177,8 +184,8 @@ html, body {
 }
 
 .help-symbol {
-  width: 13px;
-  height: 13px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   background: var(--ink-primary);
   color: #fff;
@@ -192,22 +199,23 @@ html, body {
 .rams-toggle-switch {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 10px;
+  gap: 7px;
+  padding: 5px 11px;
   border-radius: 4px;
   border: 1px solid #8a867b;
   background: var(--key-ivory);
   color: var(--ink-primary);
   font-size: 10px;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   cursor: pointer;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 1px 0 #fff;
+  transition: all 0.1s ease;
 }
 
 .rams-toggle-switch .switch-dot {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: #7d7a72;
 }
@@ -216,7 +224,7 @@ html, body {
   background: var(--signal-orange);
   border-color: var(--signal-orange-dark);
   color: #fff;
-  box-shadow: 0 2px 4px rgba(234, 91, 12, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 4px rgba(234, 91, 12, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .rams-toggle-switch.active-orange .switch-dot {
@@ -227,10 +235,10 @@ html, body {
 .rams-stop-btn {
   display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 5px 10px;
+  gap: 6px;
+  padding: 5px 11px;
   border-radius: 4px;
-  border: 1px solid #222;
+  border: 1px solid #1e1e1c;
   background: var(--key-charcoal);
   color: #f1efe9;
   font-size: 10px;
@@ -240,80 +248,74 @@ html, body {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.22);
 }
 
+.rams-stop-btn:hover {
+  background: #383834;
+}
+
 .rams-stop-btn:active {
   transform: translateY(1px);
 }
 
 .stop-square {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
   background: var(--signal-orange);
   display: inline-block;
 }
 
 /* --------------------------------------------------------
-   UPPER HARDWARE BAY: Display Module (Left) + Fixed Controls (Right)
+   TIER 1: FULL-WIDTH CRT DISPLAY & PROGRESSION PRESET BANK
    -------------------------------------------------------- */
-.console-upper-bay {
-  display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: 8px;
-  align-items: stretch;
-  flex: 1 1 43%;
-  min-height: 180px;
-}
-
-/* DISPLAY MODULE */
 .display-module {
   background: var(--chassis-well);
-  padding: 5px;
-  border-radius: 7px;
+  padding: 6px;
+  border-radius: 8px;
   border: 1px solid var(--chassis-border);
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.16);
   display: flex;
   flex-direction: column;
-  height: 100%;
-  min-height: 0;
+  flex: 1 1 30%;
+  min-height: 155px;
 }
 
 .crt-bezel {
   background: var(--crt-bg);
-  border-radius: 5px;
+  border-radius: 6px;
   border: 1px solid var(--crt-border);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  height: 100%;
   flex: 1;
   min-height: 0;
 }
 
 .crt-top-bar {
   display: grid;
-  grid-template-columns: 1.15fr auto 1.15fr 1.35fr;
+  grid-template-columns: minmax(160px, 0.9fr) auto minmax(160px, 0.9fr) minmax(380px, 1.85fr);
   align-items: center;
-  gap: 8px;
-  padding: 7px 10px;
+  gap: 12px;
+  padding: 8px 14px;
   background: var(--crt-surface);
-  border-bottom: 1px solid #242724;
+  border-bottom: 1px solid #262a26;
   flex-shrink: 0;
 }
 
 .readout-box {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
   min-width: 0;
 }
 
 .readout-tag {
   font-family: "JetBrains Mono", "SF Mono", monospace;
-  font-size: 8.5px;
+  font-size: 9px;
+  font-weight: 600;
   letter-spacing: 0.07em;
   color: #8e948d;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   white-space: nowrap;
 }
 
@@ -346,7 +348,7 @@ html, body {
 }
 
 .readout-chord {
-  font-size: 20px;
+  font-size: 21px;
   font-weight: 700;
   color: #f3f1ea;
   letter-spacing: -0.02em;
@@ -362,7 +364,7 @@ html, body {
 
 .readout-sub {
   font-family: "JetBrains Mono", "SF Mono", monospace;
-  font-size: 9px;
+  font-size: 9.5px;
   color: #9ba199;
   white-space: nowrap;
   overflow: hidden;
@@ -370,7 +372,7 @@ html, body {
 }
 
 .arrow-divider {
-  font-size: 15px;
+  font-size: 16px;
   color: #5e635d;
   font-weight: 700;
 }
@@ -378,7 +380,7 @@ html, body {
 .clock-strip-box {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 5px;
   min-width: 0;
 }
 
@@ -386,24 +388,26 @@ html, body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 8px;
 }
 
 .clock-mono {
-  font-family: "JetBrains Mono", monospace;
+  font-family: "JetBrains Mono", "SF Mono", monospace;
   font-size: 9.5px;
   color: #d7d5ce;
   font-weight: 600;
+  letter-spacing: 0.04em;
   white-space: nowrap;
 }
 
 .beat-leds {
   display: flex;
-  gap: 4px;
+  gap: 5px;
 }
 
 .beat-led {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: #2f332f;
   border: 1px solid #444844;
@@ -433,10 +437,113 @@ html, body {
   background: linear-gradient(90deg, #8ce071 0%, var(--signal-orange) 100%);
 }
 
+/* Tactile Progression Sequence Preset Bank (Zero Scroll, Full Visibility) */
+.preset-seq-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.rams-seq-btn {
+  background: #222622;
+  color: #c9c7bf;
+  border: 1px solid #363b36;
+  border-radius: 4px;
+  padding: 4px 7px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2px;
+  min-width: 0;
+  overflow: hidden;
+  text-align: left;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 1px 2px rgba(0, 0, 0, 0.25);
+  transition: border-color 0.1s ease, background-color 0.1s ease, transform 0.05s ease;
+}
+
+.rams-seq-btn:hover {
+  background: #2a2f2a;
+  border-color: #5c635c;
+}
+
+.rams-seq-btn:active {
+  transform: translateY(1px);
+}
+
+.seq-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.seq-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #e4e2da;
+  white-space: nowrap;
+}
+
+.seq-led {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #4a4f4a;
+  flex-shrink: 0;
+}
+
+.seq-title {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #8e948d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.seq-chords {
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 8.5px;
+  color: #a8aea6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.rams-seq-btn.is-active-seq {
+  background: #2b221b;
+  border-color: var(--signal-orange);
+  box-shadow: inset 0 0 0 1px rgba(234, 91, 12, 0.35), 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.rams-seq-btn.is-active-seq .seq-led {
+  background: var(--signal-orange);
+  box-shadow: 0 0 6px var(--signal-orange);
+}
+
+.rams-seq-btn.is-active-seq .seq-title {
+  color: var(--signal-amber);
+}
+
+.rams-seq-btn.is-active-seq .seq-chords {
+  color: #f3f1ea;
+}
+
 .scope-wrapper {
   width: 100%;
   flex: 1;
-  min-height: 85px;
+  min-height: 90px;
   position: relative;
 }
 
@@ -447,55 +554,50 @@ html, body {
 }
 
 /* --------------------------------------------------------
-   CONTROL CONSOLE: Solid Fixed Modules (01, 02, 03)
+   TIER 2: 3-COLUMN MODULAR PARAMETER CONTROL DECK (01, 02, 03)
    -------------------------------------------------------- */
-.control-console {
+.control-deck {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-  height: 100%;
-}
-
-.control-console .deck-panel:nth-child(3) {
-  grid-column: span 2;
+  grid-template-columns: 1fr 1.15fr 1.15fr;
+  gap: 10px;
+  flex-shrink: 0;
 }
 
 .deck-panel {
   background: var(--chassis-panel);
   border: 1px solid var(--chassis-border);
-  border-radius: 6px;
-  padding: 7px 9px;
+  border-radius: 7px;
+  padding: 9px 12px;
   box-shadow: inset 0 1px 0 var(--chassis-highlight);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 5px;
+  gap: 7px;
   min-width: 0;
-  height: 100%;
 }
 
 .panel-header {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 7px;
   border-bottom: 1px solid var(--chassis-border);
-  padding-bottom: 4px;
+  padding-bottom: 5px;
 }
 
 .panel-num {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 8.5px;
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 9px;
   font-weight: 700;
   background: var(--ink-primary);
   color: var(--chassis-bg);
-  padding: 1px 3px;
+  padding: 1.5px 4px;
   border-radius: 2px;
 }
 
 .panel-header h2 {
-  font-size: 10px;
+  font-size: 10.5px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.09em;
   color: var(--ink-primary);
   white-space: nowrap;
 }
@@ -503,11 +605,11 @@ html, body {
 .control-group {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
 }
 
 .group-label {
-  font-size: 8px;
+  font-size: 8.5px;
   font-weight: 700;
   letter-spacing: 0.08em;
   color: var(--ink-secondary);
@@ -517,87 +619,91 @@ html, body {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
-  gap: 3px;
+  gap: 4px;
   background: var(--chassis-well);
-  padding: 2px;
+  padding: 2.5px;
   border-radius: 4px;
   border: 1px solid var(--chassis-border);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
-/* Compact SVG + Short Label Segmented Buttons: zero overflow */
+/* Unified Dieter Rams Segmented Mechanical Switches */
 .rams-seg-btn {
   background: var(--key-ivory);
   border: 1px solid #b5b0a3;
   border-radius: 3px;
-  padding: 3px 2px;
-  font-size: 8.5px;
+  padding: 5px 4px;
+  font-size: 9px;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
   color: var(--ink-secondary);
   cursor: pointer;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08), inset 0 1px 0 #fff;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
   min-width: 0;
-  overflow: hidden;
-  transition: all 0.08s;
-}
-
-.rams-seg-btn .seg-icon {
-  display: block;
-  flex-shrink: 0;
-}
-
-.rams-seg-btn span {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 8px;
-  line-height: 1;
+  transition: all 0.08s ease;
+}
+
+.rams-seg-btn:hover {
+  color: var(--ink-primary);
+  border-color: #8f8a7d;
 }
 
 .rams-seg-btn.active {
   background: var(--ink-primary);
   color: #f5f3ee;
   border-color: #111;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 .curve-row {
   display: grid;
-  grid-template-columns: 1fr 68px;
-  gap: 6px;
+  grid-template-columns: 1fr 94px;
+  gap: 8px;
   align-items: stretch;
+}
+
+.curve-controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 6px;
+  min-width: 0;
 }
 
 .curve-mini-screen {
   background: var(--crt-bg);
   border: 1px solid var(--crt-border);
-  border-radius: 4px;
+  border-radius: 5px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 2px;
+  padding: 3px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 #curve-preview {
   width: 100%;
-  height: 48px;
+  height: 54px;
   display: block;
 }
 
 .curve-screen-caption {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 7px;
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 7.5px;
   text-align: center;
   color: #8e948d;
+  letter-spacing: 0.05em;
 }
 
 .dial-grid {
   display: grid;
-  gap: 5px;
+  gap: 6px;
 }
 
 .dial-grid.two-cols {
@@ -612,75 +718,98 @@ html, body {
   background: var(--chassis-bg);
   border: 1px solid var(--chassis-border);
   border-radius: 4px;
-  padding: 4px 6px;
+  padding: 5px 7px;
   min-width: 0;
+  overflow: hidden;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
 }
 
 .dial-head {
   display: flex;
   justify-content: space-between;
-  font-size: 8px;
+  align-items: baseline;
+  font-size: 8.5px;
   font-weight: 700;
   letter-spacing: 0.04em;
   color: var(--ink-secondary);
-  margin-bottom: 2px;
+  margin-bottom: 4px;
   white-space: nowrap;
+  gap: 4px;
 }
 
 .dial-head strong {
-  font-family: "JetBrains Mono", monospace;
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 8.5px;
   color: var(--ink-primary);
 }
 
+/* Precision Braun Rectangular Linear Fader */
 .rams-slider {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  height: 3px;
-  background: var(--chassis-well);
+  height: 4px;
+  background: #bcb6a8;
   border-radius: 2px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.28);
   outline: none;
+  margin: 3px 0;
 }
 
 .rams-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: var(--ink-primary);
-  border: 2px solid var(--key-ivory);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
-  cursor: pointer;
+  width: 10px;
+  height: 15px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #272724 0%, #272724 40%, #f5f3ee 40%, #f5f3ee 60%, #272724 60%, #272724 100%);
+  border: 1px solid #141412;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  cursor: ew-resize;
+}
+
+.rams-slider::-moz-range-thumb {
+  width: 10px;
+  height: 15px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #272724 0%, #272724 40%, #f5f3ee 40%, #f5f3ee 60%, #272724 60%, #272724 100%);
+  border: 1px solid #141412;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  cursor: ew-resize;
 }
 
 .select-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 5px;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
 }
 
 .select-field {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
   min-width: 0;
 }
 
 .select-field label {
-  font-size: 7.5px;
+  font-size: 8px;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   color: var(--ink-secondary);
   white-space: nowrap;
 }
 
 .rams-select {
-  background: var(--key-ivory);
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: var(--key-ivory);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2354524c' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 7px center;
   border: 1px solid var(--chassis-border);
   border-radius: 3px;
-  padding: 4px 6px;
-  font-size: 9px;
+  padding: 4px 20px 4px 7px;
+  font-size: 9.5px;
   font-weight: 600;
   color: var(--ink-primary);
   outline: none;
@@ -690,46 +819,48 @@ html, body {
   width: 100%;
   box-sizing: border-box;
   cursor: pointer;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.06), inset 0 1px 0 #fff;
+}
+
+.rams-select:focus {
+  border-color: var(--ink-primary);
 }
 
 /* --------------------------------------------------------
-   KEYBOARD MATRIX BAY: 100% Flex & Height Filling
+   TIER 3: MECHANICAL KEYBOARD MATRIX (04 ROOT + 05 VOICINGS)
    -------------------------------------------------------- */
 .keyboard-deck {
   background: var(--chassis-panel);
   border: 1px solid var(--chassis-border);
-  border-radius: 7px;
-  padding: 8px 10px 10px;
+  border-radius: 8px;
+  padding: 9px 12px 11px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  flex: 1 1 53%;
-  min-height: 220px;
+  gap: 8px;
+  flex-shrink: 0;
   touch-action: manipulation;
-  box-sizing: border-box;
+  box-shadow: inset 0 1px 0 var(--chassis-highlight);
 }
 
 .root-section {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  flex: 1;
-  min-height: 0;
+  flex-shrink: 0;
 }
 
 .chord-section {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  flex: 2;
-  min-height: 0;
+  flex-shrink: 0;
 }
 
 .section-caption {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 9px;
+  font-size: 9.5px;
   font-weight: 700;
   letter-spacing: 0.08em;
   color: var(--ink-secondary);
@@ -737,34 +868,30 @@ html, body {
 }
 
 .hint-text {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 8px;
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 8.5px;
+  font-weight: 600;
   color: var(--ink-muted);
 }
 
 .root-button-row {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: 1fr;
-  gap: 4px;
-  flex: 1;
-  min-height: 0;
+  gap: 5px;
 }
 
 .chord-button-grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 4px;
-  flex: 1;
-  min-height: 0;
+  grid-template-rows: repeat(2, 58px);
+  gap: 5px;
 }
 
 .rams-btn {
   position: relative;
   border-radius: 5px;
   border: 1px solid #9e998d;
-  padding: 4px 5px;
+  padding: 5px 7px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -773,11 +900,9 @@ html, body {
   box-shadow:
     0 2px 0 #999488,
     0 2px 4px rgba(0, 0, 0, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  transition: transform 0.05s ease, box-shadow 0.05s ease;
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  transition: transform 0.05s ease, box-shadow 0.05s ease, border-color 0.08s ease;
   min-width: 0;
-  min-height: 44px;
-  height: 100%;
   box-sizing: border-box;
   overflow: hidden;
   touch-action: manipulation;
@@ -789,37 +914,50 @@ html, body {
   box-shadow: 0 0 0 #999488, inset 0 1px 2px rgba(0, 0, 0, 0.18);
 }
 
+/* Root Pitch Keys: Sleek, proportional single-row switches */
+.root-key {
+  height: 48px;
+}
+
 .root-natural {
   background: var(--key-ivory);
   color: var(--ink-primary);
 }
 
 .root-accidental {
-  background: #333330;
+  background: var(--key-charcoal);
   color: #f1efe9;
-  border-color: #1a1a18;
+  border-color: #181816;
   box-shadow:
-    0 2px 0 #181816,
-    0 2px 4px rgba(0, 0, 0, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    0 2px 0 #141412,
+    0 2px 4px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 
 .root-accidental .btn-key-hint {
-  color: rgba(241, 239, 233, 0.6);
+  color: rgba(241, 239, 233, 0.62);
 }
 
-.root-accidental .btn-sub-label {
-  color: rgba(241, 239, 233, 0.5);
+.root-label-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 3px;
 }
 
-.root-accidental.is-selected {
-  border-color: #ffffff;
-  box-shadow: 0 0 0 1px #ffffff, 0 2px 4px rgba(0, 0, 0, 0.3);
+.btn-enharmonic {
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 8.5px;
+  font-weight: 500;
+  color: rgba(241, 239, 233, 0.52);
 }
 
+/* 24 Harmonic Voicing Switches */
 .chord-key {
   background: var(--key-ivory);
   color: var(--ink-primary);
+  height: 100%;
 }
 
 .btn-top-row {
@@ -833,30 +971,35 @@ html, body {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #b8b3a6;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.35);
+  background: #b5b0a3;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.38);
   flex-shrink: 0;
 }
 
+.root-accidental .btn-led {
+  background: #4a4944;
+}
+
 .btn-key-hint {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 8px;
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 8.5px;
+  font-weight: 600;
   color: var(--ink-muted);
 }
 
 .btn-main-label {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: -0.02em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 100%;
   text-align: left;
+  line-height: 1.1;
 }
 
 .btn-sub-label {
-  font-size: 7px;
+  font-size: 8px;
   color: var(--ink-muted);
   white-space: nowrap;
   overflow: hidden;
@@ -865,24 +1008,64 @@ html, body {
   text-align: left;
 }
 
-/* Button Active / Cued / Selected states */
+/* Hardware-Authentic Switch States (Preserves Ivory / Charcoal Keycap Identity) */
 .rams-btn.is-selected {
   border-color: var(--ink-primary);
+  box-shadow:
+    0 2px 0 #66635b,
+    inset 0 -2px 0 var(--ink-primary),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.root-accidental.is-selected {
+  border-color: #d8d5cc;
+  box-shadow:
+    0 2px 0 #141412,
+    inset 0 -2px 0 #f1efe9,
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 .rams-btn.is-active-chord {
-  border-color: #2f6f36;
-  background: #e5f0e5;
-  color: var(--ink-primary);
+  border-color: #2f7a37;
+}
+
+.root-natural.is-active-chord,
+.chord-key.is-active-chord {
+  background: #eaf2e8;
+  box-shadow:
+    0 2px 0 #6e8c6e,
+    inset 0 -2px 0 #35843d,
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.root-accidental.is-active-chord {
+  background: #252b25;
+  border-color: #4ce05b;
+  box-shadow:
+    0 2px 0 #141412,
+    inset 0 -2px 0 #4ce05b,
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 .rams-btn.is-active-chord .btn-led {
-  background: #4ce05b;
-  box-shadow: 0 0 6px #4ce05b;
+  background: var(--signal-green);
+  box-shadow: 0 0 7px var(--signal-green);
 }
 
 .rams-btn.is-cued-chord {
   border-color: var(--signal-orange);
+  box-shadow:
+    0 2px 0 #999488,
+    inset 0 -2px 0 var(--signal-orange),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.root-accidental.is-cued-chord {
+  border-color: var(--signal-amber);
+  box-shadow:
+    0 2px 0 #141412,
+    inset 0 -2px 0 var(--signal-amber),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 .rams-btn.is-cued-chord .btn-led {
@@ -892,19 +1075,19 @@ html, body {
 }
 
 /* --------------------------------------------------------
-   SOLID BOTTOM BEZEL / PALM REST (Pure Touch Buffer, No Text)
+   SOLID BOTTOM BEZEL / PALM REST (Touch Safety & Hardware Frame)
    -------------------------------------------------------- */
 .hardware-palm-rest {
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 22px;
-  padding: 0 16px max(14px, env(safe-area-inset-bottom) + 8px);
+  padding: 0 16px max(6px, env(safe-area-inset-bottom));
   background: linear-gradient(180deg, #d3cec4 0%, #c4beb3 100%);
   border-top: 1px solid var(--chassis-border);
   flex-shrink: 0;
-  margin-left: -12px;
-  margin-right: -12px;
+  margin-left: -16px;
+  margin-right: -16px;
 }
 
 .chassis-rivet {
@@ -917,55 +1100,92 @@ html, body {
 }
 
 /* --------------------------------------------------------
-   RESPONSIVE (Tablet, iPad Mini, Mobile)
+   RESPONSIVE ADAPTATION (Compact Laptop Height, Tablet, Mobile)
    -------------------------------------------------------- */
-@media (max-width: 1040px) {
-  .console-upper-bay {
-    grid-template-columns: 1fr;
-    flex: initial;
+@media (max-height: 820px) and (min-width: 1041px) {
+  .braun-chassis {
+    padding: 7px 14px 0;
+    gap: 6px;
   }
-  .root-button-row {
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+  .top-plate {
+    padding-bottom: 5px;
+  }
+  .deck-panel {
+    padding: 7px 10px;
+    gap: 5px;
+  }
+  #curve-preview {
+    height: 46px;
+  }
+  .root-key {
+    height: 42px;
   }
   .chord-button-grid {
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 50px);
   }
+}
+
+@media (max-width: 1120px) {
+  .crt-top-bar {
+    grid-template-columns: 1fr auto 1fr;
+    gap: 8px;
+  }
+  .clock-strip-box {
+    grid-column: 1 / -1;
+    border-top: 1px solid #262a26;
+    padding-top: 6px;
+  }
+}
+
+@media (max-width: 1024px) {
   html, body {
     overflow-y: auto;
     height: auto;
   }
   .braun-chassis {
     height: auto;
-    min-height: 100vh;
+    min-height: 100dvh;
+  }
+  .control-deck {
+    grid-template-columns: 1fr 1fr;
+  }
+  .control-deck .deck-panel:nth-child(3) {
+    grid-column: span 2;
+  }
+  .root-button-row {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .chord-button-grid {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(4, 54px);
   }
 }
 
 @media (max-width: 768px) {
   .braun-chassis {
-    padding: 6px 8px 0;
+    padding: 8px 10px 0;
   }
   .crt-top-bar {
     grid-template-columns: 1fr;
-    gap: 5px;
   }
-  .control-console {
+  .arrow-divider {
+    display: none;
+  }
+  .preset-seq-row {
     grid-template-columns: 1fr;
   }
-  .control-console .deck-panel:nth-child(3) {
+  .control-deck {
+    grid-template-columns: 1fr;
+  }
+  .control-deck .deck-panel:nth-child(3) {
     grid-column: span 1;
   }
   .root-button-row {
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(3, 1fr);
   }
   .chord-button-grid {
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(6, 1fr);
-  }
-  .select-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(6, 54px);
   }
   .dial-grid.four-cols {
     grid-template-columns: 1fr 1fr;
@@ -973,7 +1193,7 @@ html, body {
 }
 
 /* --------------------------------------------------------
-   MANUAL & SHORTCUTS POPOVER
+   OPERATING MANUAL & SHORTCUTS POPOVER
    -------------------------------------------------------- */
 .manual-backdrop {
   position: fixed;
@@ -985,7 +1205,7 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 16px;
+  padding: 18px;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.18s ease;
@@ -1000,11 +1220,11 @@ html, body {
   background: #f1efe9;
   color: var(--ink-primary);
   width: 100%;
-  max-width: 720px;
-  max-height: 85vh;
-  border-radius: 8px;
+  max-width: 760px;
+  max-height: 86vh;
+  border-radius: 10px;
   border: 1px solid #b3aea0;
-  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55), inset 0 1px 0 #ffffff;
+  box-shadow: 0 24px 55px rgba(0, 0, 0, 0.58), inset 0 1px 0 #ffffff;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -1013,14 +1233,14 @@ html, body {
 .manual-header {
   background: #dedad0;
   border-bottom: 2px solid #b8b3a6;
-  padding: 12px 16px;
+  padding: 14px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .manual-header h2 {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--ink-primary);
 }
@@ -1029,10 +1249,10 @@ html, body {
   background: #2b2b28;
   color: #f1efe9;
   border: none;
-  border-radius: 4px;
-  width: 26px;
-  height: 26px;
-  font-size: 12px;
+  border-radius: 5px;
+  width: 28px;
+  height: 28px;
+  font-size: 13px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1044,19 +1264,19 @@ html, body {
 }
 
 .manual-content {
-  padding: 16px 18px;
+  padding: 18px 20px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  font-size: 12px;
-  line-height: 1.45;
+  gap: 16px;
+  font-size: 12.5px;
+  line-height: 1.5;
   color: #353430;
 }
 
 .manual-sec {
   border-bottom: 1px solid #d4d0c5;
-  padding-bottom: 12px;
+  padding-bottom: 14px;
 }
 
 .manual-sec:last-child {
@@ -1065,117 +1285,134 @@ html, body {
 }
 
 .manual-sec-title {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 9.5px;
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.11em;
   color: var(--ink-primary);
-  margin-bottom: 5px;
+  margin-bottom: 6px;
+}
+
+.manual-highlight {
+  background: #fdecd8;
+  color: var(--signal-orange-dark);
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-weight: 700;
+  font-size: 11px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  border: 1px solid #f2c7a2;
 }
 
 .manual-table-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 5px;
+  gap: 14px;
+  margin-top: 6px;
 }
 
 .table-col h4 {
-  font-size: 9.5px;
+  font-size: 10px;
   font-weight: 700;
   color: var(--ink-secondary);
-  margin-bottom: 5px;
+  margin-bottom: 6px;
   border-bottom: 1px solid #cbc6b9;
-  padding-bottom: 2px;
+  padding-bottom: 3px;
 }
 
 .shortcut-list {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
 }
 
 .shortcut-list li {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 10.5px;
+  gap: 7px;
+  font-size: 11.5px;
 }
 
 kbd {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 9.5px;
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 10px;
   font-weight: 700;
   background: #ffffff;
   color: #1a1a18;
   border: 1px solid #b8b3a6;
   border-bottom: 2px solid #8e8a7e;
   border-radius: 3px;
-  padding: 1px 4px;
-  min-width: 16px;
+  padding: 1px 5px;
+  min-width: 18px;
   text-align: center;
 }
 
 .chord-keymap-box {
   background: #e6e3da;
   border: 1px solid #cbc6b9;
-  border-radius: 4px;
-  padding: 6px 8px;
+  border-radius: 5px;
+  padding: 8px 10px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  margin-top: 4px;
+  gap: 6px;
+  margin-top: 5px;
 }
 
 .keymap-row {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 5px;
 }
 
 .row-label {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 8.5px;
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 9px;
   font-weight: 700;
   color: var(--ink-secondary);
-  min-width: 75px;
+  min-width: 82px;
 }
 
 .keymap-row code {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 9px;
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 9.5px;
   background: #fdfdfc;
   border: 1px solid #b8b3a6;
-  border-radius: 2px;
-  padding: 1px 3px;
+  border-radius: 3px;
+  padding: 1px 4px;
 }
 
 .feature-bullets {
   list-style: square;
-  padding-left: 15px;
+  padding-left: 16px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 6px;
 }
 
 .manual-footer {
   background: #dedad0;
   border-top: 1px solid #b8b3a6;
-  padding: 8px 16px;
+  padding: 10px 20px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  gap: 10px;
 }
 
 .manual-confirm-btn {
   background: var(--signal-orange);
   color: #ffffff;
   border: 1px solid var(--signal-orange-dark);
-  border-radius: 4px;
-  padding: 5px 12px;
-  font-size: 10px;
+  border-radius: 5px;
+  padding: 6px 14px;
+  font-size: 10.5px;
   font-weight: 700;
+  letter-spacing: 0.06em;
   cursor: pointer;
+}
+
+.manual-confirm-btn:hover {
+  background: #d85006;
 }

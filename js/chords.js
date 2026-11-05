@@ -36,6 +36,9 @@ export const CHORD_TYPES = [
 
 export const PRESET_PROGRESSIONS = [
   {
+    id: 'seq-1',
+    shortName: 'NEO-SOUL',
+    summary: 'Dm9 → G13 → Cmaj9 → A7♭9',
     name: 'Neo-Soul Turnaround (Dm9 → G13 → Cmaj9 → A7♭9)',
     chords: [
       { root: 2, typeId: 'm9' },
@@ -45,6 +48,9 @@ export const PRESET_PROGRESSIONS = [
     ],
   },
   {
+    id: 'seq-2',
+    shortName: 'WARM CINEMA',
+    summary: 'Fmaj9 → Fm6 → Em7 → A7♯9',
     name: 'Warm Cinema (Fmaj9 → Fm6 → Em7 → A7♯9)',
     chords: [
       { root: 5, typeId: 'maj9' },
@@ -54,6 +60,9 @@ export const PRESET_PROGRESSIONS = [
     ],
   },
   {
+    id: 'seq-3',
+    shortName: 'LYDIAN FLOAT',
+    summary: 'Cmaj7♯11 → Bm7 → Am9 → D13',
     name: 'Floating Lydian (Cmaj7♯11 → Bm7 → Am9 → D13)',
     chords: [
       { root: 0, typeId: 'maj7#11' },

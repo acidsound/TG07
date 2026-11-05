@@ -6,7 +6,7 @@ import {
   formatChordName,
   midiToNoteName,
 } from './chords.js';
-import { NUM_VOICES, evaluateGlideCurve } from './voice-leading.js';
+import { NUM_VOICES, buildInitialVoicing, evaluateGlideCurve } from './voice-leading.js';
 import { GlideAudioEngine, SOUND_PRESETS } from './audio-engine.js';
 import { QuantizedGlideScheduler, GRID_OPTIONS } from './clock-scheduler.js';
 import { WebMidiController } from './midi-controller.js';
@@ -24,6 +24,7 @@ class GlideApp {
 
     this.selectedRoot = 2; // Default D (for Dm9)
     this.selectedTypeId = 'm9';
+    this.activePresetIdx = null;
     this.scopeCanvas = null;
     this.scopeCtx = null;
     this.curveCanvas = null;
@@ -39,7 +40,7 @@ class GlideApp {
     this.buildRootButtons();
     this.buildChordButtons();
     this.buildGridButtons();
-    this.buildPresetSelect();
+    this.buildPresetButtons();
     this.bindControls();
     this.bindKeyboard();
     this.resizeCanvases();
@@ -67,11 +68,8 @@ class GlideApp {
     await this.ensureAudioReady();
     this.selectedRoot = root;
     this.selectedTypeId = typeId;
+    this.activePresetIdx = null;
     this.scheduler.inputChord(root, typeId);
-    const seqSelect = document.getElementById('progression-preset-select');
-    if (seqSelect && !this.scheduler.autoLoopEnabled) {
-      seqSelect.value = 'manual';
-    }
     this.highlightSelectedButtons();
   }
 
@@ -87,22 +85,9 @@ class GlideApp {
     const container = document.getElementById('root-buttons');
     container.innerHTML = '';
     const letterHints = ['C', 'C♯', 'D', 'E♭', 'E', 'F', 'F♯', 'G', 'A♭', 'A', 'B♭', 'B'];
+    const enharmonicHints = ['', 'D♭', '', 'D♯', '', '', 'G♭', '', 'G♯', '', 'A♯', ''];
     const blackKeys = new Set([1, 3, 6, 8, 10]);
     const rootKeyMap = ['Z', 'S', 'X', 'D', 'C', 'V', 'G', 'B', 'H', 'N', 'J', 'M'];
-    const rootSubLabels = [
-      'C Natural',
-      'C♯ / D♭',
-      'D Natural',
-      'D♯ / E♭',
-      'E Natural',
-      'F Natural',
-      'F♯ / G♭',
-      'G Natural',
-      'G♯ / A♭',
-      'A Natural',
-      'A♯ / B♭',
-      'B Natural',
-    ];
 
     for (let pc = 0; pc < 12; pc++) {
       const btn = document.createElement('button');
@@ -114,8 +99,10 @@ class GlideApp {
           <span class="btn-led"></span>
           <span class="btn-key-hint">${rootKeyMap[pc]}</span>
         </span>
-        <span class="btn-main-label">${letterHints[pc]}</span>
-        <span class="btn-sub-label">${rootSubLabels[pc]}</span>
+        <span class="root-label-row">
+          <span class="btn-main-label">${letterHints[pc]}</span>
+          ${enharmonicHints[pc] ? `<span class="btn-enharmonic">${enharmonicHints[pc]}</span>` : ''}
+        </span>
       `;
       const triggerRoot = async (e) => {
         if (e.type === 'touchstart') e.preventDefault();
@@ -179,31 +166,37 @@ class GlideApp {
     }
   }
 
-  buildPresetSelect() {
-    const select = document.getElementById('progression-preset-select');
-    if (!select) return;
-    select.innerHTML = '<option value="manual">MANUAL (KEYBOARD / LATCH)</option>';
-    PRESET_PROGRESSIONS.forEach((prog, idx) => {
-      const opt = document.createElement('option');
-      opt.value = String(idx);
-      opt.textContent = `SEQ ${idx + 1}: ${prog.name}`;
-      select.appendChild(opt);
-    });
+  buildPresetButtons() {
+    const container = document.getElementById('progression-presets');
+    if (!container) return;
+    container.innerHTML = '';
 
-    select.addEventListener('change', async (e) => {
-      const val = e.target.value;
-      if (val === 'manual') {
-        this.scheduler.stopAndRelease();
-        this.highlightSelectedButtons();
-      } else {
-        const idx = Number(val);
-        const prog = PRESET_PROGRESSIONS[idx];
-        if (prog) {
+    PRESET_PROGRESSIONS.forEach((prog, idx) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'rams-seq-btn';
+      btn.dataset.seqIdx = String(idx);
+      btn.title = `${prog.name} — Click to start or toggle off`;
+      btn.innerHTML = `
+        <span class="seq-top-row">
+          <span class="seq-badge"><span class="seq-led"></span>SEQ 0${idx + 1}</span>
+          <span class="seq-title">${prog.shortName || ''}</span>
+        </span>
+        <span class="seq-chords">${prog.summary || prog.name}</span>
+      `;
+      btn.addEventListener('click', async () => {
+        if (this.scheduler.autoLoopEnabled && this.activePresetIdx === idx) {
+          this.activePresetIdx = null;
+          this.scheduler.stopAndRelease();
+          this.highlightSelectedButtons();
+        } else {
           await this.ensureAudioReady();
+          this.activePresetIdx = idx;
           this.scheduler.startAutoProgression(prog.chords);
           this.highlightSelectedButtons();
         }
-      }
+      });
+      container.appendChild(btn);
     });
   }
 
@@ -237,9 +230,8 @@ class GlideApp {
 
     // Stop / Release Button
     document.getElementById('stop-btn').addEventListener('click', () => {
+      this.activePresetIdx = null;
       this.scheduler.stopAndRelease();
-      const seqSelect = document.getElementById('progression-preset-select');
-      if (seqSelect) seqSelect.value = 'manual';
       this.highlightSelectedButtons();
     });
 
@@ -455,15 +447,14 @@ class GlideApp {
 
       if (e.code === 'Space') {
         e.preventDefault();
-        const seqSelect = document.getElementById('progression-preset-select');
         if (this.scheduler.isRunning) {
+          this.activePresetIdx = null;
           this.scheduler.stopAndRelease();
-          if (seqSelect) seqSelect.value = 'manual';
           this.highlightSelectedButtons();
         } else {
           await this.ensureAudioReady();
+          this.activePresetIdx = 0;
           this.scheduler.startAutoProgression(PRESET_PROGRESSIONS[0].chords);
-          if (seqSelect) seqSelect.value = '0';
           this.highlightSelectedButtons();
         }
         return;
@@ -497,18 +488,27 @@ class GlideApp {
     const active = this.scheduler.activeChord;
     const cued = this.scheduler.cuedChord;
 
+    if (!this.scheduler.autoLoopEnabled) {
+      this.activePresetIdx = null;
+    }
+
+    document.querySelectorAll('.rams-seq-btn').forEach((btn) => {
+      const idx = Number(btn.dataset.seqIdx);
+      btn.classList.toggle('is-active-seq', this.scheduler.autoLoopEnabled && this.activePresetIdx === idx);
+    });
+
     document.querySelectorAll('.root-key').forEach((btn) => {
       const r = Number(btn.dataset.root);
       btn.classList.toggle('is-selected', r === this.selectedRoot);
-      btn.classList.toggle('is-active-chord', active && active.root === r);
-      btn.classList.toggle('is-cued-chord', cued && cued.root === r);
+      btn.classList.toggle('is-active-chord', !!(active && active.root === r));
+      btn.classList.toggle('is-cued-chord', !!(cued && cued.root === r));
     });
 
     document.querySelectorAll('.chord-key').forEach((btn) => {
       const id = btn.dataset.typeId;
       btn.classList.toggle('is-selected', id === this.selectedTypeId);
-      btn.classList.toggle('is-active-chord', active && active.typeId === id);
-      btn.classList.toggle('is-cued-chord', cued && cued.typeId === id);
+      btn.classList.toggle('is-active-chord', !!(active && active.typeId === id));
+      btn.classList.toggle('is-cued-chord', !!(cued && cued.typeId === id));
     });
   }
 
@@ -753,7 +753,32 @@ class GlideApp {
     );
 
     const active = this.scheduler.activeChord;
-    if (!active) return;
+    if (!active) {
+      const standbyMidis = buildInitialVoicing(this.selectedRoot, this.selectedTypeId, this.scheduler.octaveOffset);
+      for (let v = 0; v < NUM_VOICES; v++) {
+        const isBass = v === 0;
+        const m = standbyMidis[v];
+        const y = midiToY(m);
+
+        ctx.strokeStyle = isBass ? 'rgba(234, 91, 12, 0.38)' : 'rgba(140, 224, 113, 0.28)';
+        ctx.lineWidth = (isBass ? 1.8 : 1.2) * dpr;
+        ctx.setLineDash([4 * dpr, 4 * dpr]);
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(splitX, y);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = isBass ? 'rgba(234, 91, 12, 0.75)' : 'rgba(232, 230, 223, 0.52)';
+        ctx.font = `500 ${9 * dpr}px "JetBrains Mono", "SF Mono", monospace`;
+        ctx.fillText(
+          `${isBass ? 'BASS' : `V${v}`} ${midiToNoteName(m)}`,
+          8 * dpr,
+          y - 4 * dpr
+        );
+      }
+      return;
+    }
 
     const liveMidis = this.audio.getAllLiveVoiceMidis();
     const prevMidis = this.scheduler.previousVoicing || active.voicing;
