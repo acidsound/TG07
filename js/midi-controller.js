@@ -2,17 +2,18 @@
 import { CHORD_TYPES, detectChordFromMidiNotes } from './chords.js';
 
 export class WebMidiController {
-  constructor(onChordTriggered, onChordReleased, onStatusUpdate) {
+  constructor(onChordTriggered, onChordReleased, onStatusUpdate, onRootSelected) {
     this.onChordTriggered = onChordTriggered;
     this.onChordReleased = onChordReleased;
     this.onStatusUpdate = onStatusUpdate;
+    this.onRootSelected = onRootSelected;
 
     this.midiAccess = null;
     this.inputs = [];
     this.outputs = [];
     this.selectedInputId = 'all';
     this.selectedOutputId = 'none';
-    this.inputMode = 'split'; // 'split' (Below C3 = Root, C3..B4 = 24 Chords) | 'detect' (Play full chord)
+    this.inputMode = 'root-only'; // 'root-only' (Any Key = Root) | 'split' (Below C3 = Root, C3..B4 = 24 Chords) | 'detect' (Poly)
     this.splitNote = 48; // C3
 
     this.heldNotes = new Set();
@@ -75,10 +76,20 @@ export class WebMidiController {
   }
 
   processNoteOn(midiNote) {
+    const pc = ((midiNote % 12) + 12) % 12;
+
+    if (this.inputMode === 'root-only') {
+      this.currentRoot = pc;
+      this.onRootSelected?.(pc, true);
+      return;
+    }
+
     if (this.inputMode === 'split') {
       if (midiNote < this.splitNote) {
-        // Root selector
-        this.currentRoot = ((midiNote % 12) + 12) % 12;
+        // Root selector (Below C3)
+        this.currentRoot = pc;
+        this.onRootSelected?.(pc, true);
+
         // Check if any chord key above split is also held
         const heldUpper = [...this.heldNotes].find((n) => n >= this.splitNote && n < this.splitNote + 24);
         if (heldUpper !== undefined) {
@@ -101,6 +112,7 @@ export class WebMidiController {
       const detected = detectChordFromMidiNotes(notes);
       if (detected) {
         this.currentRoot = detected.root;
+        this.onRootSelected?.(detected.root, false);
         this.onChordTriggered?.(detected.root, detected.typeId);
       }
     }

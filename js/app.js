@@ -17,7 +17,8 @@ class GlideApp {
     this.midi = new WebMidiController(
       (root, typeId) => this.handleChordInput(root, typeId),
       () => this.scheduler.handleInputRelease(),
-      (midiState) => this.updateMidiUI(midiState)
+      (midiState) => this.updateMidiUI(midiState),
+      (root, triggerChord) => this.handleRootSelect(root, triggerChord)
     );
     this.scheduler = new QuantizedGlideScheduler(this.audio, this.midi, () => this.renderStatusUI());
 
@@ -70,6 +71,14 @@ class GlideApp {
     this.highlightSelectedButtons();
   }
 
+  async handleRootSelect(root, triggerChord = true) {
+    this.selectedRoot = root;
+    this.highlightSelectedButtons();
+    if (triggerChord) {
+      await this.handleChordInput(root, this.selectedTypeId);
+    }
+  }
+
   buildRootButtons() {
     const container = document.getElementById('root-buttons');
     container.innerHTML = '';
@@ -86,12 +95,7 @@ class GlideApp {
         <span class="btn-main-label">${letterHints[pc]}</span>
       `;
       btn.addEventListener('mousedown', async () => {
-        this.selectedRoot = pc;
-        this.highlightSelectedButtons();
-        // If user clicks root while already latched, cue same chord quality on the new root!
-        if (this.scheduler.activeChord) {
-          await this.handleChordInput(pc, this.selectedTypeId);
-        }
+        await this.handleRootSelect(pc, !!this.scheduler.activeChord);
       });
       container.appendChild(btn);
     }
