@@ -73,6 +73,7 @@ export class QuantizedGlideScheduler {
    * User inputs a chord (via UI button, QWERTY keyboard, or MIDI)
    */
   inputChord(root, typeId) {
+    this.autoLoopEnabled = false;
     // 1. If nothing is currently playing or clock is stopped, start immediately on Beat 1
     if (!this.isRunning || !this.activeChord || this.triggerTiming === 'immediate') {
       const voicing = this.activeChord

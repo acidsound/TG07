@@ -48,18 +48,18 @@
 ### 컴퓨터 키보드 단축키
 | 키 | 기능 |
 |:---|:---|
-| <kbd>A</kbd> ~ <kbd>G</kbd> | 기본 근음(Natural Root) 선택 (`A`, `B`, `C`, `D`, `E`, `F`, `G`) |
-| <kbd>Shift</kbd> + <kbd>A~G</kbd> | 반음 올린 근음 선택 (Sharp ♯) |
-| <kbd>Z</kbd> / <kbd>X</kbd> | 현재 선택된 근음 반음 내림(♭) / 반음 올림(♯) |
-| <kbd>1</kbd> ~ <kbd>=</kbd> (상단 숫자열) | 3화음, Sus, Add9, 6th, Dim, Aug 코드 12가지 즉시 트리거 |
-| <kbd>Q</kbd> ~ <kbd>\</kbd> (QWERTY 문자열) | 7th, 9th, 11th, 13th, Altered 재즈 코드 12가지 즉시 트리거 |
+| <kbd>Z</kbd> ~ <kbd>M</kbd> (하단 2열) | 피아노 건반 방식 12음 근음(Root) 직접 선택 (`C` ~ `B`) |
+| <kbd>Z</kbd> <kbd>X</kbd> <kbd>C</kbd> <kbd>V</kbd> <kbd>B</kbd> <kbd>N</kbd> <kbd>M</kbd> | 흰건반 (Natural): `C`, `D`, `E`, `F`, `G`, `A`, `B` |
+| <kbd>S</kbd> <kbd>D</kbd> <kbd>G</kbd> <kbd>H</kbd> <kbd>J</kbd> | 검은건반 (Accidental): `C♯`, `D♯`, `F♯`, `G♯`, `A♯` |
+| <kbd>1</kbd> ~ <kbd>=</kbd> (상단 숫자열 12개) | Triads, Sus, Add9, 6th, Dim, Aug 코드 12가지 즉시 트리거 |
+| <kbd>Q</kbd> ~ <kbd>]</kbd> (QWERTY 문자열 12개) | 7th, 9th, 11th, 13th, Altered 재즈 코드 12가지 즉시 트리거 |
 | <kbd>Space</kbd> | 데모 시퀀스 1 자동 재생 / 전체 보이스 릴리즈 및 클락 정지 |
 | <kbd>?</kbd> 또는 <kbd>/</kbd> | 오퍼레이팅 매뉴얼 & 단축키 팝오버 열기/닫기 |
 | <kbd>Esc</kbd> | 팝오버 닫기 |
 
 ### 24가지 코드 매핑 표
 * **상단 행 (`1` ~ `=`)**: `maj`(`1`), `m`(`2`), `sus2`(`3`), `sus4`(`4`), `dim`(`5`), `aug`(`6`), `add9`(`7`), `6`(`8`), `m6`(`9`), `6/9`(`0`), `7sus4`(`-`), `dim7`(`=`)
-* **하단 행 (`Q` ~ `\`)**: `maj7`(`Q`), `m7`(`W`), `7`(`R`), `m7♭5`(`T`), `maj9`(`Y`), `m9`(`U`), `9`(`I`), `m11`(`O`), `13`(`P`), `7♭9`(`[`), `7♯9`(`]`), `maj7♯11`(`\`)
+* **하단 행 (`Q` ~ `]`)**: `maj7`(`Q`), `m7`(`W`), `7`(`E`), `m7♭5`(`R`), `maj9`(`T`), `m9`(`Y`), `9`(`U`), `m11`(`I`), `13`(`O`), `7♭9`(`P`), `7♯9`(`[`), `maj7♯11`(`]`)
 
 ---
 

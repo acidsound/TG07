@@ -19,19 +19,19 @@ export const CHORD_TYPES = [
   { id: '7sus4',   label: '7sus4',   name: 'Dom 7th Sus4',   intervals: [0, 5, 7, 10],         keyHint: '-' },
   { id: 'dim7',    label: 'dim7',    name: 'Diminished 7th', intervals: [0, 3, 6, 9],          keyHint: '=' },
 
-  // Row 2: 7ths, 9ths, Extensions & Altered
+  // Row 2: 7ths, 9ths, Extensions & Altered (Mapped to QWERTYUIOP[])
   { id: 'maj7',    label: 'maj7',    name: 'Major 7th',      intervals: [0, 4, 7, 11],         keyHint: 'Q' },
   { id: 'm7',      label: 'm7',      name: 'Minor 7th',      intervals: [0, 3, 7, 10],         keyHint: 'W' },
-  { id: 'dom7',    label: '7',       name: 'Dominant 7th',   intervals: [0, 4, 7, 10],         keyHint: 'R' },
-  { id: 'm7b5',    label: 'm7♭5',    name: 'Half Diminished',intervals: [0, 3, 6, 10],         keyHint: 'T' },
-  { id: 'maj9',    label: 'maj9',    name: 'Major 9th',      intervals: [0, 4, 7, 11, 14],     keyHint: 'Y' },
-  { id: 'm9',      label: 'm9',      name: 'Minor 9th',      intervals: [0, 3, 7, 10, 14],     keyHint: 'U' },
-  { id: 'dom9',    label: '9',       name: 'Dominant 9th',   intervals: [0, 4, 7, 10, 14],     keyHint: 'I' },
-  { id: 'm11',     label: 'm11',     name: 'Minor 11th',     intervals: [0, 3, 7, 10, 14, 17], keyHint: 'O' },
-  { id: 'dom13',   label: '13',      name: 'Dominant 13th',  intervals: [0, 4, 7, 10, 14, 21], keyHint: 'P' },
-  { id: '7b9',     label: '7♭9',     name: 'Dom 7th Flat 9', intervals: [0, 4, 7, 10, 13],     keyHint: '[' },
-  { id: '7#9',     label: '7♯9',     name: 'Dom 7th Sharp 9',intervals: [0, 4, 7, 10, 15],     keyHint: ']' },
-  { id: 'maj7#11', label: 'maj7♯11', name: 'Lydian Maj7♯11', intervals: [0, 4, 7, 11, 14, 18], keyHint: '\\' },
+  { id: 'dom7',    label: '7',       name: 'Dominant 7th',   intervals: [0, 4, 7, 10],         keyHint: 'E' },
+  { id: 'm7b5',    label: 'm7♭5',    name: 'Half Diminished',intervals: [0, 3, 6, 10],         keyHint: 'R' },
+  { id: 'maj9',    label: 'maj9',    name: 'Major 9th',      intervals: [0, 4, 7, 11, 14],     keyHint: 'T' },
+  { id: 'm9',      label: 'm9',      name: 'Minor 9th',      intervals: [0, 3, 7, 10, 14],     keyHint: 'Y' },
+  { id: 'dom9',    label: '9',       name: 'Dominant 9th',   intervals: [0, 4, 7, 10, 14],     keyHint: 'U' },
+  { id: 'm11',     label: 'm11',     name: 'Minor 11th',     intervals: [0, 3, 7, 10, 14, 17], keyHint: 'I' },
+  { id: 'dom13',   label: '13',      name: 'Dominant 13th',  intervals: [0, 4, 7, 10, 14, 21], keyHint: 'O' },
+  { id: '7b9',     label: '7♭9',     name: 'Dom 7th Flat 9', intervals: [0, 4, 7, 10, 13],     keyHint: 'P' },
+  { id: '7#9',     label: '7♯9',     name: 'Dom 7th Sharp 9',intervals: [0, 4, 7, 10, 15],     keyHint: '[' },
+  { id: 'maj7#11', label: 'maj7♯11', name: 'Lydian Maj7♯11', intervals: [0, 4, 7, 11, 14, 18], keyHint: ']' },
 ];
 
 export const PRESET_PROGRESSIONS = [

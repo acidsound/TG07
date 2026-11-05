@@ -39,7 +39,7 @@ class GlideApp {
     this.buildRootButtons();
     this.buildChordButtons();
     this.buildGridButtons();
-    this.buildPresetButtons();
+    this.buildPresetSelect();
     this.bindControls();
     this.bindKeyboard();
     this.resizeCanvases();
@@ -68,6 +68,10 @@ class GlideApp {
     this.selectedRoot = root;
     this.selectedTypeId = typeId;
     this.scheduler.inputChord(root, typeId);
+    const seqSelect = document.getElementById('progression-preset-select');
+    if (seqSelect && !this.scheduler.autoLoopEnabled) {
+      seqSelect.value = 'manual';
+    }
     this.highlightSelectedButtons();
   }
 
@@ -84,6 +88,21 @@ class GlideApp {
     container.innerHTML = '';
     const letterHints = ['C', 'C♯', 'D', 'E♭', 'E', 'F', 'F♯', 'G', 'A♭', 'A', 'B♭', 'B'];
     const blackKeys = new Set([1, 3, 6, 8, 10]);
+    const rootKeyMap = ['Z', 'S', 'X', 'D', 'C', 'V', 'G', 'B', 'H', 'N', 'J', 'M'];
+    const rootSubLabels = [
+      'C Natural',
+      'C♯ / D♭',
+      'D Natural',
+      'D♯ / E♭',
+      'E Natural',
+      'F Natural',
+      'F♯ / G♭',
+      'G Natural',
+      'G♯ / A♭',
+      'A Natural',
+      'A♯ / B♭',
+      'B Natural',
+    ];
 
     for (let pc = 0; pc < 12; pc++) {
       const btn = document.createElement('button');
@@ -91,8 +110,12 @@ class GlideApp {
       btn.className = `rams-btn root-key ${blackKeys.has(pc) ? 'root-accidental' : 'root-natural'}`;
       btn.dataset.root = String(pc);
       btn.innerHTML = `
-        <span class="btn-led"></span>
+        <span class="btn-top-row">
+          <span class="btn-led"></span>
+          <span class="btn-key-hint">${rootKeyMap[pc]}</span>
+        </span>
         <span class="btn-main-label">${letterHints[pc]}</span>
+        <span class="btn-sub-label">${rootSubLabels[pc]}</span>
       `;
       const triggerRoot = async (e) => {
         if (e.type === 'touchstart') e.preventDefault();
@@ -156,20 +179,31 @@ class GlideApp {
     }
   }
 
-  buildPresetButtons() {
-    const container = document.getElementById('progression-presets');
-    container.innerHTML = '';
+  buildPresetSelect() {
+    const select = document.getElementById('progression-preset-select');
+    if (!select) return;
+    select.innerHTML = '<option value="manual">MANUAL (KEYBOARD / LATCH)</option>';
     PRESET_PROGRESSIONS.forEach((prog, idx) => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'rams-pill-btn';
-      btn.textContent = `SEQ ${idx + 1}: ${prog.name}`;
-      btn.addEventListener('click', async () => {
-        await this.ensureAudioReady();
-        this.scheduler.startAutoProgression(prog.chords);
+      const opt = document.createElement('option');
+      opt.value = String(idx);
+      opt.textContent = `SEQ ${idx + 1}: ${prog.name}`;
+      select.appendChild(opt);
+    });
+
+    select.addEventListener('change', async (e) => {
+      const val = e.target.value;
+      if (val === 'manual') {
+        this.scheduler.stopAndRelease();
         this.highlightSelectedButtons();
-      });
-      container.appendChild(btn);
+      } else {
+        const idx = Number(val);
+        const prog = PRESET_PROGRESSIONS[idx];
+        if (prog) {
+          await this.ensureAudioReady();
+          this.scheduler.startAutoProgression(prog.chords);
+          this.highlightSelectedButtons();
+        }
+      }
     });
   }
 
@@ -204,6 +238,8 @@ class GlideApp {
     // Stop / Release Button
     document.getElementById('stop-btn').addEventListener('click', () => {
       this.scheduler.stopAndRelease();
+      const seqSelect = document.getElementById('progression-preset-select');
+      if (seqSelect) seqSelect.value = 'manual';
       this.highlightSelectedButtons();
     });
 
@@ -335,20 +371,66 @@ class GlideApp {
   }
 
   bindKeyboard() {
-    const rootLetterMap = {
-      KeyC: 0,
-      KeyD: 2,
-      KeyE: 4,
-      KeyF: 5,
-      KeyG: 7,
-      KeyA: 9,
-      KeyB: 11,
+    // Piano key mapping starting from C:
+    // White keys: C=Z, D=X, E=C, F=V, G=B, A=N, B=M
+    // Black keys: C#=S, D#=D, F#=G, G#=H, A#=J
+    const pianoCodeMap = {
+      KeyZ: 0,
+      KeyS: 1,
+      KeyX: 2,
+      KeyD: 3,
+      KeyC: 4,
+      KeyV: 5,
+      KeyG: 6,
+      KeyB: 7,
+      KeyH: 8,
+      KeyN: 9,
+      KeyJ: 10,
+      KeyM: 11,
+    };
+    const pianoCharMap = {
+      Z: 0,
+      S: 1,
+      X: 2,
+      D: 3,
+      C: 4,
+      V: 5,
+      G: 6,
+      B: 7,
+      H: 8,
+      N: 9,
+      J: 10,
+      M: 11,
+    };
+
+    const chordCodeMap = {
+      Digit1: '1', Digit2: '2', Digit3: '3', Digit4: '4', Digit5: '5',
+      Digit6: '6', Digit7: '7', Digit8: '8', Digit9: '9', Digit0: '0',
+      Minus: '-', Equal: '=',
+      KeyQ: 'Q', KeyW: 'W', KeyE: 'E', KeyR: 'R', KeyT: 'T', KeyY: 'Y',
+      KeyU: 'U', KeyI: 'I', KeyO: 'O', KeyP: 'P',
+      BracketLeft: '[', BracketRight: ']',
     };
 
     const chordKeyMap = {};
     CHORD_TYPES.forEach((ct) => {
       chordKeyMap[ct.keyHint.toUpperCase()] = ct.id;
     });
+
+    const getChordTypeId = (e) => {
+      const codeKey = chordCodeMap[e.code];
+      if (codeKey && chordKeyMap[codeKey]) return chordKeyMap[codeKey];
+      const char = e.key ? e.key.toUpperCase() : '';
+      if (chordKeyMap[char]) return chordKeyMap[char];
+      return undefined;
+    };
+
+    const getRootPitch = (e) => {
+      if (pianoCodeMap[e.code] !== undefined) return pianoCodeMap[e.code];
+      const ch = e.key ? e.key.toUpperCase() : '';
+      if (pianoCharMap[ch] !== undefined) return pianoCharMap[ch];
+      return undefined;
+    };
 
     window.addEventListener('keydown', async (e) => {
       if (e.repeat || e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
@@ -373,57 +455,39 @@ class GlideApp {
 
       if (e.code === 'Space') {
         e.preventDefault();
+        const seqSelect = document.getElementById('progression-preset-select');
         if (this.scheduler.isRunning) {
           this.scheduler.stopAndRelease();
+          if (seqSelect) seqSelect.value = 'manual';
           this.highlightSelectedButtons();
         } else {
           await this.ensureAudioReady();
           this.scheduler.startAutoProgression(PRESET_PROGRESSIONS[0].chords);
+          if (seqSelect) seqSelect.value = '0';
           this.highlightSelectedButtons();
         }
         return;
       }
 
-      // Root selection via A..G letters
-      if (rootLetterMap[e.code] !== undefined) {
-        let pc = rootLetterMap[e.code];
-        if (e.shiftKey) pc = (pc + 1) % 12;
-        this.selectedRoot = pc;
-        this.highlightSelectedButtons();
-        if (this.scheduler.activeChord) {
-          await this.handleChordInput(this.selectedRoot, this.selectedTypeId);
-        }
+      // 1. Root pitch selection via piano keys (Z S X D C V G B H N J M)
+      const rootPitch = getRootPitch(e);
+      if (rootPitch !== undefined) {
+        e.preventDefault();
+        await this.handleRootSelect(rootPitch, !!this.scheduler.activeChord);
         return;
       }
 
-      // Flat (Z) / Sharp (X) root transpose
-      if (e.code === 'KeyZ') {
-        this.selectedRoot = (this.selectedRoot + 11) % 12;
-        this.highlightSelectedButtons();
-        if (this.scheduler.activeChord) {
-          await this.handleChordInput(this.selectedRoot, this.selectedTypeId);
-        }
-        return;
-      }
-      if (e.code === 'KeyX') {
-        this.selectedRoot = (this.selectedRoot + 1) % 12;
-        this.highlightSelectedButtons();
-        if (this.scheduler.activeChord) {
-          await this.handleChordInput(this.selectedRoot, this.selectedTypeId);
-        }
-        return;
-      }
-
-      // Chord type trigger
-      const keyChar = e.key.toUpperCase();
-      if (chordKeyMap[keyChar]) {
-        await this.handleChordInput(this.selectedRoot, chordKeyMap[keyChar]);
+      // 2. Chord type trigger (Row 1: 1~= / Row 2: Q~])
+      const chordTypeId = getChordTypeId(e);
+      if (chordTypeId) {
+        e.preventDefault();
+        await this.handleChordInput(this.selectedRoot, chordTypeId);
       }
     });
 
     window.addEventListener('keyup', (e) => {
-      const keyChar = e.key.toUpperCase();
-      if (chordKeyMap[keyChar]) {
+      const chordTypeId = getChordTypeId(e);
+      if (chordTypeId) {
         this.scheduler.handleInputRelease();
       }
     });

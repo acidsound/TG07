@@ -433,33 +433,6 @@ html, body {
   background: linear-gradient(90deg, #8ce071 0%, var(--signal-orange) 100%);
 }
 
-.preset-seq-row {
-  display: flex;
-  gap: 4px;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-}
-
-.rams-pill-btn {
-  background: #252825;
-  color: #c9c7bf;
-  border: 1px solid #3c413c;
-  border-radius: 3px;
-  padding: 2px 5px;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 8px;
-  cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
-  transition: all 0.1s;
-}
-
-.rams-pill-btn:hover {
-  background: var(--signal-orange);
-  color: #fff;
-  border-color: var(--signal-orange);
-}
-
 .scope-wrapper {
   width: 100%;
   flex: 1;
@@ -706,7 +679,7 @@ html, body {
   background: var(--key-ivory);
   border: 1px solid var(--chassis-border);
   border-radius: 3px;
-  padding: 3px 5px;
+  padding: 4px 6px;
   font-size: 9px;
   font-weight: 600;
   color: var(--ink-primary);
@@ -715,6 +688,8 @@ html, body {
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
 }
 
 /* --------------------------------------------------------
@@ -737,15 +712,16 @@ html, body {
 .root-section {
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  flex-shrink: 0;
+  gap: 4px;
+  flex: 1;
+  min-height: 0;
 }
 
 .chord-section {
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  flex: 1;
+  gap: 4px;
+  flex: 2;
   min-height: 0;
 }
 
@@ -757,6 +733,7 @@ html, body {
   font-weight: 700;
   letter-spacing: 0.08em;
   color: var(--ink-secondary);
+  line-height: 1.2;
 }
 
 .hint-text {
@@ -768,12 +745,16 @@ html, body {
 .root-button-row {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: 1fr;
   gap: 4px;
+  flex: 1;
+  min-height: 0;
 }
 
 .chord-button-grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   gap: 4px;
   flex: 1;
   min-height: 0;
@@ -783,18 +764,21 @@ html, body {
   position: relative;
   border-radius: 5px;
   border: 1px solid #9e998d;
-  padding: 5px 4px;
+  padding: 4px 5px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   box-shadow:
     0 2px 0 #999488,
     0 2px 4px rgba(0, 0, 0, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
   transition: transform 0.05s ease, box-shadow 0.05s ease;
   min-width: 0;
+  min-height: 44px;
+  height: 100%;
+  box-sizing: border-box;
   overflow: hidden;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
@@ -808,7 +792,6 @@ html, body {
 .root-natural {
   background: var(--key-ivory);
   color: var(--ink-primary);
-  height: 42px;
 }
 
 .root-accidental {
@@ -819,16 +802,24 @@ html, body {
     0 2px 0 #181816,
     0 2px 4px rgba(0, 0, 0, 0.22),
     inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  height: 42px;
+}
+
+.root-accidental .btn-key-hint {
+  color: rgba(241, 239, 233, 0.6);
+}
+
+.root-accidental .btn-sub-label {
+  color: rgba(241, 239, 233, 0.5);
+}
+
+.root-accidental.is-selected {
+  border-color: #ffffff;
+  box-shadow: 0 0 0 1px #ffffff, 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .chord-key {
   background: var(--key-ivory);
   color: var(--ink-primary);
-  height: 100%;
-  min-height: 52px;
-  align-items: flex-start;
-  padding: 4px 6px;
 }
 
 .btn-top-row {
@@ -933,8 +924,13 @@ html, body {
     grid-template-columns: 1fr;
     flex: initial;
   }
+  .root-button-row {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
   .chord-button-grid {
     grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(4, 1fr);
   }
   html, body {
     overflow-y: auto;
@@ -961,10 +957,12 @@ html, body {
     grid-column: span 1;
   }
   .root-button-row {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
   }
   .chord-button-grid {
     grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(6, 1fr);
   }
   .select-grid {
     grid-template-columns: 1fr 1fr;
