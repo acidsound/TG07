@@ -1,7 +1,6 @@
 # TG-07 // QUANTIZED POLYPHONIC GLIDE SYNTHESIZER
-> **Dieter Rams (Braun) Inspired Industrial Instrument with Shortest-Path Polyphonic Voice Leading & Clock-Quantized Pre-input (Cue) Engine**
+> **Shortest-Path Polyphonic Voice Leading & Clock-Quantized Pre-input (Cue) Engine**
 
-![Braun TG-07 Banner](https://img.shields.io/badge/DESIGN-DIETER_RAMS_BRAUN-orange)
 ![WebAudio](https://img.shields.io/badge/AUDIO-WEB_AUDIO_API-green)
 ![WebMIDI](https://img.shields.io/badge/MIDI-WEB_MIDI_API-blue)
 ![Architecture](https://img.shields.io/badge/VOICES-7_INDEPENDENT_POLY-darkred)
@@ -10,7 +9,7 @@
 
 ## 📻 개요 (Overview)
 
-**TG-07**은 [Swanek Audio의 Swan Glide](https://swanekaudio.com/swan-glide)에서 영감을 받아, **디터 람스(Dieter Rams)의 브라운(Braun) 인더스트리얼 오디오 랩 디자인 철학**(*"Weniger, aber besser" - 더 적게, 그러나 더 좋게*)을 바탕으로 구현된 **7성부 다성 글라이드 신디사이저 & 화성 시퀀서 프로토타입**입니다.
+**TG-07**은 [Swanek Audio의 Swan Glide](https://swanekaudio.com/swan-glide)에서 영감을 받아 구현된 **7성부 다성 글라이드 신디사이저 & 화성 시퀀서 프로토타입**입니다.
 
 일반적인 신디사이저의 모노포닉 포르타멘토나 단순 피치 벤드와 달리, 코드가 변경될 때 **7개의 개별 보이스(베이스 1개 + 상성부 6개)가 각자 독립적으로 가장 가까운 음정(Shortest-Path Voice Leading)을 찾아 서로 다른 방향과 간격으로 액체처럼 미끄러지며(Glide)** 화성을 형성합니다.
 
@@ -84,8 +83,8 @@
 
 ```
 glideAnything/
-├── index.html            # Dieter Rams 인더스트리얼 UI & 오실로스코프, 매뉴얼 팝오버
-├── styles.css            # Braun 하드웨어 질감, 섀시, 슬라이더, 반응형 CSS
+├── index.html            # UI 레이아웃, 오실로스코프, 매뉴얼 팝오버
+├── styles.css            # 하드웨어 질감 스타일, 슬라이더, 반응형 CSS
 ├── js/
 │   ├── app.js            # 메인 앱 컨트롤러, 이벤트 바인딩 & 60fps 캔버스 오실로스코프
 │   ├── chords.js         # 24개 코드 사전, 인터벌 계산 & 화성 분석 유틸리티
@@ -112,10 +111,3 @@ python3 -m http.server 8080
 # 3. 브라우저 접속 (WebMIDI 지원을 위해 Chrome 또는 Edge 권장)
 open http://localhost:8080
 ```
-
----
-
-## 🎨 디자인 레퍼런스 (Design References)
-* **Braun T 1000 / TG 60 / SK 4:** 디터 람스의 기능주의 미학과 정밀 가공 알루미늄 질감, 시그널 오렌지 포인트
-* **Swanek Audio Swan Glide:** 다성부 독립 최단 거리 글라이드 보이스 리딩
-* **Ableton Live:** 클립 런치 퀀타이즈 및 넥스트 바 선입력(Next Bar Cueing) 워크플로우

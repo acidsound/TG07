@@ -94,9 +94,12 @@ class GlideApp {
         <span class="btn-led"></span>
         <span class="btn-main-label">${letterHints[pc]}</span>
       `;
-      btn.addEventListener('mousedown', async () => {
+      const triggerRoot = async (e) => {
+        if (e.type === 'touchstart') e.preventDefault();
         await this.handleRootSelect(pc, !!this.scheduler.activeChord);
-      });
+      };
+      btn.addEventListener('mousedown', triggerRoot);
+      btn.addEventListener('touchstart', triggerRoot, { passive: false });
       container.appendChild(btn);
     }
   }
@@ -118,12 +121,18 @@ class GlideApp {
         <span class="btn-main-label">${ct.label}</span>
         <span class="btn-sub-label">${ct.name}</span>
       `;
-      btn.addEventListener('mousedown', async () => {
+      const triggerChord = async (e) => {
+        if (e.type === 'touchstart') e.preventDefault();
         await this.handleChordInput(this.selectedRoot, ct.id);
-      });
-      btn.addEventListener('mouseup', () => {
+      };
+      const releaseChord = (e) => {
+        if (e.type === 'touchend') e.preventDefault();
         this.scheduler.handleInputRelease();
-      });
+      };
+      btn.addEventListener('mousedown', triggerChord);
+      btn.addEventListener('touchstart', triggerChord, { passive: false });
+      btn.addEventListener('mouseup', releaseChord);
+      btn.addEventListener('touchend', releaseChord, { passive: false });
       container.appendChild(btn);
     }
     this.highlightSelectedButtons();

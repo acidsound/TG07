@@ -12,7 +12,6 @@
     <header class="top-plate">
       <div class="brand-block">
         <div class="model-badge">
-          <span class="brand-mark">BRAUN / AUDIO LAB</span>
           <h1 class="model-title">TG-07 <span>POLYPHONIC GLIDE INSTRUMENT</span></h1>
         </div>
         <div class="speaker-grille" aria-hidden="true">
@@ -46,8 +45,10 @@
       </div>
     </header>
 
-    <!-- UPPER DISPLAY MODULE: Oscilloscope Voice-Leading Screen + Active/Cued Readout -->
-    <section class="display-module">
+    <!-- UPPER HARDWARE BAY: Solid Oscilloscope Display (Left) + Fixed Parameter Console (Right) -->
+    <div class="console-upper-bay">
+      <!-- UPPER DISPLAY MODULE: Oscilloscope Voice-Leading Screen + Active/Cued Readout -->
+      <section class="display-module">
       <div class="crt-bezel">
         <div class="crt-top-bar">
           <div class="readout-box active-box">
@@ -85,8 +86,8 @@
       </div>
     </section>
 
-    <!-- MIDDLE CONTROL DECK: Clock/Grid, Glide Curve, Voice Stagger/Arp, Synth Tone & MIDI -->
-    <section class="control-deck">
+      <!-- CONTROL CONSOLE: Solid Fixed Parameter Console (Always Visible, No Drawers) -->
+      <section id="control-deck" class="control-console">
       <!-- Module 1: Master Clock & Quantize Grid -->
       <div class="deck-panel">
         <div class="panel-header">
@@ -102,9 +103,18 @@
         <div class="control-group">
           <label class="group-label">PRE-INPUT GLIDE TRIGGER</label>
           <div id="trigger-timing-selector" class="segmented-row">
-            <button type="button" class="rams-seg-btn active" data-timing="on-grid" title="Start gliding on Beat 1 of the next Grid">START ON GRID</button>
-            <button type="button" class="rams-seg-btn" data-timing="land-on-grid" title="Start gliding early so voices arrive on Beat 1">LAND ON GRID</button>
-            <button type="button" class="rams-seg-btn" data-timing="immediate" title="Unquantized immediate glide">IMMEDIATE</button>
+            <button type="button" class="rams-seg-btn active" data-timing="on-grid" title="Start on Bar: Voices begin gliding on Beat 1 of next grid">
+              <svg class="seg-icon" viewBox="0 0 16 12" width="13" height="10"><line x1="2" y1="1" x2="2" y2="11" stroke="currentColor" stroke-width="2"/><path d="M2 6 H14 M10 3.5 L13.5 6 L10 8.5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+              <span>ON BAR</span>
+            </button>
+            <button type="button" class="rams-seg-btn" data-timing="land-on-grid" title="Land on Bar: Glide starts early to land on Beat 1">
+              <svg class="seg-icon" viewBox="0 0 16 12" width="13" height="10"><line x1="14" y1="1" x2="14" y2="11" stroke="currentColor" stroke-width="2"/><path d="M2 6 H14 M10 3.5 L13.5 6 L10 8.5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+              <span>TO BAR</span>
+            </button>
+            <button type="button" class="rams-seg-btn" data-timing="immediate" title="Immediate: Unquantized instant glide">
+              <svg class="seg-icon" viewBox="0 0 16 12" width="13" height="10"><polygon points="9 1, 4 6.5, 8 6.5, 7 11, 12 5, 8 5" fill="currentColor"/></svg>
+              <span>NOW</span>
+            </button>
           </div>
         </div>
 
@@ -137,18 +147,42 @@
           <div class="curve-controls">
             <label class="group-label">INTERPOLATION CURVE</label>
             <div id="curve-type-selector" class="segmented-row">
-              <button type="button" class="rams-seg-btn active" data-curve="exp-out">EXP OUT</button>
-              <button type="button" class="rams-seg-btn" data-curve="exp-in">EXP IN</button>
-              <button type="button" class="rams-seg-btn" data-curve="s-curve">S-CURVE</button>
-              <button type="button" class="rams-seg-btn" data-curve="linear">LINEAR</button>
+              <button type="button" class="rams-seg-btn active" data-curve="exp-out" title="Exponential Decel: Fast takeoff, smooth landing">
+                <svg class="seg-icon" viewBox="0 0 16 12" width="13" height="10"><path d="M2 10 Q 3 2, 14 2" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+                <span>EXP ↘</span>
+              </button>
+              <button type="button" class="rams-seg-btn" data-curve="exp-in" title="Exponential Accel: Sustain current note, accelerate into chord">
+                <svg class="seg-icon" viewBox="0 0 16 12" width="13" height="10"><path d="M2 10 Q 13 10, 14 2" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+                <span>EXP ↗</span>
+              </button>
+              <button type="button" class="rams-seg-btn" data-curve="s-curve" title="S-Curve: Smooth ease-in ease-out sigmoid">
+                <svg class="seg-icon" viewBox="0 0 16 12" width="13" height="10"><path d="M2 10 C 6 10, 10 2, 14 2" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+                <span>S-CRV</span>
+              </button>
+              <button type="button" class="rams-seg-btn" data-curve="linear" title="Linear: Constant glide speed">
+                <svg class="seg-icon" viewBox="0 0 16 12" width="13" height="10"><line x1="2" y1="10" x2="14" y2="2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                <span>LIN</span>
+              </button>
             </div>
 
-            <label class="group-label" style="margin-top:10px;">VOICE STAGGER / ARP GLIDE</label>
+            <label class="group-label" style="margin-top:7px;">VOICE STAGGER / ARP GLIDE</label>
             <div id="arp-motion-selector" class="segmented-row">
-              <button type="button" class="rams-seg-btn" data-arp="simultaneous">UNISON</button>
-              <button type="button" class="rams-seg-btn active" data-arp="strum-up">STRUM ↑</button>
-              <button type="button" class="rams-seg-btn" data-arp="strum-down">STRUM ↓</button>
-              <button type="button" class="rams-seg-btn" data-arp="inner-arp">ARP WAVE</button>
+              <button type="button" class="rams-seg-btn" data-arp="simultaneous" title="Unison: All 7 voices glide simultaneously">
+                <svg class="seg-icon" viewBox="0 0 16 12" width="13" height="10"><line x1="2" y1="3" x2="14" y2="3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="2" y1="6" x2="14" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="2" y1="9" x2="14" y2="9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                <span>UNI</span>
+              </button>
+              <button type="button" class="rams-seg-btn active" data-arp="strum-up" title="Strum Up: Bass glides first, up to soprano">
+                <svg class="seg-icon" viewBox="0 0 16 12" width="13" height="10"><rect x="2" y="8" width="2.6" height="3" fill="currentColor"/><rect x="6.5" y="5" width="2.6" height="6" fill="currentColor"/><rect x="11" y="2" width="2.6" height="9" fill="currentColor"/></svg>
+                <span>STR ↑</span>
+              </button>
+              <button type="button" class="rams-seg-btn" data-arp="strum-down" title="Strum Down: Top voice glides first, down to bass">
+                <svg class="seg-icon" viewBox="0 0 16 12" width="13" height="10"><rect x="2" y="2" width="2.6" height="9" fill="currentColor"/><rect x="6.5" y="5" width="2.6" height="6" fill="currentColor"/><rect x="11" y="8" width="2.6" height="3" fill="currentColor"/></svg>
+                <span>STR ↓</span>
+              </button>
+              <button type="button" class="rams-seg-btn" data-arp="inner-arp" title="Arp Wave: Oscillating inner voice motion while latched">
+                <svg class="seg-icon" viewBox="0 0 16 12" width="13" height="10"><path d="M2 6 Q 5 1, 8 6 T 14 6" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+                <span>WAVE</span>
+              </button>
             </div>
           </div>
 
@@ -242,6 +276,7 @@
         </div>
       </div>
     </section>
+  </div> <!-- /.console-upper-bay -->
 
     <!-- LOWER KEYBOARD MATRIX: 12 Root Selector Keys + 24 Chord Quality Mechanical Switches -->
     <section class="keyboard-deck">
@@ -261,14 +296,19 @@
         <div id="chord-buttons" class="chord-button-grid"></div>
       </div>
     </section>
+
+    <!-- SOLID HARDWARE BOTTOM BEZEL / PALM REST (Safe area for touch & hardware ergonomics) -->
+    <div class="hardware-palm-rest" aria-hidden="true">
+      <span class="chassis-rivet"></span>
+      <span class="chassis-rivet"></span>
+    </div>
   </main>
 
-  <!-- DIETER RAMS OPERATING MANUAL & SHORTCUTS POPOVER -->
+  <!-- OPERATING MANUAL & SHORTCUTS POPOVER -->
   <div id="manual-popover" class="manual-backdrop" aria-hidden="true">
     <div class="manual-card" role="dialog" aria-modal="true" aria-labelledby="manual-title">
       <div class="manual-header">
         <div class="manual-title-block">
-          <span class="manual-badge">BEDIENUNGSANLEITUNG // DOC-07</span>
           <h2 id="manual-title">TG-07 OPERATING MANUAL &amp; SHORTCUTS</h2>
         </div>
         <button id="manual-close-btn" type="button" class="manual-close-btn" title="Close Manual (Esc)">✕</button>
@@ -348,8 +388,7 @@
       </div>
 
       <div class="manual-footer">
-        <span class="manual-footer-note">BRAUN DESIGN PHILOSOPHY: WENIGER, ABER BESSER (LESS, BUT BETTER)</span>
-        <button id="manual-confirm-btn" type="button" class="manual-confirm-btn">VERSTANDEN (CLOSE)</button>
+        <button id="manual-confirm-btn" type="button" class="manual-confirm-btn">CLOSE</button>
       </div>
     </div>
   </div>
