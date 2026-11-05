@@ -31,6 +31,10 @@
           <span id="midi-led" class="status-led"></span>
           <span id="midi-status-badge" class="status-label">CHECKING MIDI...</span>
         </div>
+        <button id="help-toggle-btn" type="button" class="rams-help-btn" title="Operating Manual & Shortcuts (?)">
+          <span class="help-symbol">?</span>
+          <span>MANUAL</span>
+        </button>
         <button id="latch-toggle" type="button" class="rams-toggle-switch active-orange">
           <span class="switch-dot"></span>
           <span class="switch-caption">LATCH <strong class="toggle-state">ON (HOLD)</strong></span>
@@ -258,6 +262,97 @@
       </div>
     </section>
   </main>
+
+  <!-- DIETER RAMS OPERATING MANUAL & SHORTCUTS POPOVER -->
+  <div id="manual-popover" class="manual-backdrop" aria-hidden="true">
+    <div class="manual-card" role="dialog" aria-modal="true" aria-labelledby="manual-title">
+      <div class="manual-header">
+        <div class="manual-title-block">
+          <span class="manual-badge">BEDIENUNGSANLEITUNG // DOC-07</span>
+          <h2 id="manual-title">TG-07 OPERATING MANUAL &amp; SHORTCUTS</h2>
+        </div>
+        <button id="manual-close-btn" type="button" class="manual-close-btn" title="Close Manual (Esc)">✕</button>
+      </div>
+
+      <div class="manual-content">
+        <!-- Section 1: Core Paradigm -->
+        <section class="manual-sec">
+          <h3 class="manual-sec-title">01 // CORE PARADIGM: LATCH &amp; QUANTIZED PRE-INPUT (CUE)</h3>
+          <p class="manual-desc">
+            일반적인 신디사이저처럼 건반을 계속 누르고 있을 필요가 없습니다. 
+            <strong>LATCH ON</strong> 상태에서는 코드를 한 번 누르면 손을 떼도 소리가 유지되며, 
+            음악이 연주되는 도중 <strong>다음 코드를 언제든 미리 누르면(Pre-input)</strong> 
+            새 코드가 즉시 연주되지 않고 <span class="manual-highlight">NEXT GRID PRE-INPUT (CUE)</span> 슬롯에 대기합니다.
+            마스터 클락의 다음 마디(Grid)가 시작되는 순간 7개의 보이스가 최단 경로로 우아하게 미끄러집니다.
+          </p>
+        </section>
+
+        <!-- Section 2: Shortcuts Table -->
+        <section class="manual-sec">
+          <h3 class="manual-sec-title">02 // COMPUTER KEYBOARD SHORTCUTS</h3>
+          <div class="manual-table-grid">
+            <div class="table-col">
+              <h4>ROOT PITCH CONTROLS</h4>
+              <ul class="shortcut-list">
+                <li><kbd>A</kbd> ~ <kbd>G</kbd> <span>자연음 근음 선택 (A, B, C, D, E, F, G)</span></li>
+                <li><kbd>Shift</kbd> + <kbd>Note</kbd> <span>반음 올림 (Sharp ♯)</span></li>
+                <li><kbd>Z</kbd> <span>현재 근음 반음 내림 (Flat ♭)</span></li>
+                <li><kbd>X</kbd> <span>현재 근음 반음 올림 (Sharp ♯)</span></li>
+              </ul>
+            </div>
+            <div class="table-col">
+              <h4>GLOBAL &amp; TRANSPORT</h4>
+              <ul class="shortcut-list">
+                <li><kbd>Space</kbd> <span>자동 루프 재생 / 전체 릴리즈 (Stop)</span></li>
+                <li><kbd>?</kbd> / <kbd>/</kbd> <span>이 사용 설명서 / 단축키 팝오버 열기/닫기</span></li>
+                <li><kbd>Esc</kbd> <span>팝오버 닫기</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <h4 style="margin-top: 14px;">24 HARMONIC VOICING KEYS</h4>
+          <div class="chord-keymap-box">
+            <div class="keymap-row">
+              <span class="row-label">NUM 1~=</span>
+              <code>1:maj</code><code>2:m</code><code>3:sus2</code><code>4:sus4</code><code>5:dim</code><code>6:aug</code>
+              <code>7:add9</code><code>8:6</code><code>9:m6</code><code>0:6/9</code><code>-:7sus4</code><code>=:dim7</code>
+            </div>
+            <div class="keymap-row">
+              <span class="row-label">QWERTY Q~\</span>
+              <code>Q:maj7</code><code>W:m7</code><code>R:7</code><code>T:m7♭5</code><code>Y:maj9</code><code>U:m9</code>
+              <code>I:9</code><code>O:m11</code><code>P:13</code><code>[:7♭9</code><code>]:7♯9</code><code>\:maj7♯11</code>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 3: WebMIDI Modes -->
+        <section class="manual-sec">
+          <h3 class="manual-sec-title">03 // WEBMIDI ROUTING MODES</h3>
+          <ul class="feature-bullets">
+            <li><strong>ROOT ONLY (기본값):</strong> 건반의 아무 키나 단음으로 누르면 그 음이 Root로 지정되며, 현재 선택된 코드 성향으로 다음 Grid에 선입력되어 글라이드합니다. (베이스 치듯 연주 가능)</li>
+            <li><strong>SPLIT (Swan Glide 원작):</strong> C3 미만은 Root 선택, C3 이상은 24가지 코드 타입 선택용으로 건반을 분할합니다.</li>
+            <li><strong>POLY CHORD DETECT:</strong> 건반으로 3~4개 음의 코드를 직접 연주하면 실시간으로 화성을 분석하여 자동 선입력합니다.</li>
+          </ul>
+        </section>
+
+        <!-- Section 4: Curve & Voice Motion -->
+        <section class="manual-sec">
+          <h3 class="manual-sec-title">04 // GLIDE CURVE &amp; VOICE MOTION</h3>
+          <ul class="feature-bullets">
+            <li><strong>START ON GRID vs LAND ON GRID:</strong> 다음 마디 첫 박(Beat 1)에 글라이드를 시작할지, 아니면 다음 마디 첫 박에 딱 도착하도록 미리 출발할지 선택할 수 있습니다.</li>
+            <li><strong>EXP OUT:</strong> 아날로그 RC 회로 질감처럼 초반에 빠르게 출발하여 목적 음정에 부드럽게 안착합니다.</li>
+            <li><strong>STRUM ↑ / ↓:</strong> 7개 성부가 동시에 출발하지 않고 아르페지오처럼 시차(Strum Delay)를 두고 순차 출발합니다.</li>
+            <li><strong>ARP WAVE:</strong> 코드가 길게 유지되는 동안에도 8분음표 단위로 내부 성부들이 인접한 코드 구성음 사이를 오가며 물결치듯 움직입니다.</li>
+          </ul>
+        </section>
+      </div>
+
+      <div class="manual-footer">
+        <span class="manual-footer-note">BRAUN DESIGN PHILOSOPHY: WENIGER, ABER BESSER (LESS, BUT BETTER)</span>
+        <button id="manual-confirm-btn" type="button" class="manual-confirm-btn">VERSTANDEN (CLOSE)</button>
+      </div>
+    </div>
+  </div>
 
   <script type="module" src="./js/app.js"></script>
 </body>

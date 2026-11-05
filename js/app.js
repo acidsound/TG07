@@ -165,6 +165,22 @@ class GlideApp {
   }
 
   bindControls() {
+    // Manual / Help Popover
+    const manualBackdrop = document.getElementById('manual-popover');
+    const toggleManual = (force) => {
+      const isOpen = manualBackdrop.classList.contains('is-open');
+      const next = typeof force === 'boolean' ? force : !isOpen;
+      manualBackdrop.classList.toggle('is-open', next);
+      manualBackdrop.setAttribute('aria-hidden', String(!next));
+    };
+
+    document.getElementById('help-toggle-btn')?.addEventListener('click', () => toggleManual());
+    document.getElementById('manual-close-btn')?.addEventListener('click', () => toggleManual(false));
+    document.getElementById('manual-confirm-btn')?.addEventListener('click', () => toggleManual(false));
+    manualBackdrop?.addEventListener('click', (e) => {
+      if (e.target === manualBackdrop) toggleManual(false);
+    });
+
     // Latch Toggle
     const latchBtn = document.getElementById('latch-toggle');
     latchBtn.addEventListener('click', () => {
@@ -327,6 +343,24 @@ class GlideApp {
 
     window.addEventListener('keydown', async (e) => {
       if (e.repeat || e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+
+      const manualEl = document.getElementById('manual-popover');
+
+      // Manual / Help Toggle via '?' or '/' or close via 'Escape'
+      if (e.code === 'Slash' || e.key === '?') {
+        e.preventDefault();
+        const isOpen = manualEl.classList.contains('is-open');
+        manualEl.classList.toggle('is-open', !isOpen);
+        manualEl.setAttribute('aria-hidden', String(isOpen));
+        return;
+      }
+      if (e.code === 'Escape') {
+        if (manualEl.classList.contains('is-open')) {
+          manualEl.classList.remove('is-open');
+          manualEl.setAttribute('aria-hidden', 'true');
+          return;
+        }
+      }
 
       if (e.code === 'Space') {
         e.preventDefault();

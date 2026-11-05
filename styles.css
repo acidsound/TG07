@@ -223,6 +223,48 @@ body {
   display: inline-block;
 }
 
+/* MANUAL / HELP BUTTON */
+.rams-help-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: 6px;
+  border: 1px solid #8a867b;
+  background: var(--key-ivory);
+  color: var(--ink-primary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  box-shadow:
+    0 2px 3px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 #fff;
+  transition: all 0.1s ease;
+}
+
+.rams-help-btn:hover {
+  background: #fdfdfc;
+  border-color: var(--ink-primary);
+}
+
+.rams-help-btn:active {
+  transform: translateY(1px);
+}
+
+.help-symbol {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--ink-primary);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+}
+
 /* CRT DISPLAY MODULE */
 .display-module {
   background: var(--chassis-well);
@@ -776,5 +818,288 @@ body {
   }
   .chord-button-grid {
     grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+/* ========================================================
+   DIETER RAMS OPERATING MANUAL & SHORTCUTS POPOVER
+   ======================================================== */
+.manual-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 18, 16, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.manual-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.manual-card {
+  background: #f1efe9;
+  color: var(--ink-primary);
+  width: 100%;
+  max-width: 780px;
+  max-height: 88vh;
+  border-radius: 12px;
+  border: 1px solid #b3aea0;
+  box-shadow:
+    0 24px 55px rgba(0, 0, 0, 0.6),
+    0 4px 12px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 #ffffff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: popIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    transform: scale(1) translateY(0);
+  }
+}
+
+.manual-header {
+  background: #dedad0;
+  border-bottom: 2px solid #b8b3a6;
+  padding: 16px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.manual-badge {
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--ink-secondary);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.manual-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink-primary);
+}
+
+.manual-close-btn {
+  background: #2b2b28;
+  color: #f1efe9;
+  border: none;
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.1s;
+}
+
+.manual-close-btn:hover {
+  background: var(--braun-orange);
+}
+
+.manual-content {
+  padding: 22px 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #353430;
+}
+
+.manual-sec {
+  border-bottom: 1px solid #d4d0c5;
+  padding-bottom: 18px;
+}
+
+.manual-sec:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.manual-sec-title {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--ink-primary);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.manual-desc {
+  color: #48463f;
+}
+
+.manual-highlight {
+  background: #fdecd8;
+  color: var(--braun-orange-dark);
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 700;
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px solid #f2c7a2;
+}
+
+.manual-table-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.table-col h4 {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--ink-secondary);
+  margin-bottom: 8px;
+  border-bottom: 1px solid #cbc6b9;
+  padding-bottom: 4px;
+}
+
+.shortcut-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.shortcut-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+kbd {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  background: #ffffff;
+  color: #1a1a18;
+  border: 1px solid #b8b3a6;
+  border-bottom: 2px solid #8e8a7e;
+  border-radius: 4px;
+  padding: 2px 7px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
+  min-width: 20px;
+  text-align: center;
+}
+
+.chord-keymap-box {
+  background: #e6e3da;
+  border: 1px solid #cbc6b9;
+  border-radius: 6px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.keymap-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.row-label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ink-secondary);
+  min-width: 90px;
+}
+
+.keymap-row code {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  background: #fdfdfc;
+  border: 1px solid #b8b3a6;
+  border-radius: 3px;
+  padding: 2px 5px;
+  color: var(--ink-primary);
+}
+
+.feature-bullets {
+  list-style: square;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: #48463f;
+}
+
+.feature-bullets strong {
+  color: var(--ink-primary);
+}
+
+.manual-footer {
+  background: #dedad0;
+  border-top: 1px solid #b8b3a6;
+  padding: 12px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.manual-footer-note {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--ink-secondary);
+  letter-spacing: 0.1em;
+}
+
+.manual-confirm-btn {
+  background: var(--braun-orange);
+  color: #ffffff;
+  border: 1px solid var(--braun-orange-dark);
+  border-radius: 6px;
+  padding: 7px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(234, 91, 12, 0.35);
+  transition: background-color 0.1s;
+}
+
+.manual-confirm-btn:hover {
+  background: #d85006;
+}
+
+@media (max-width: 640px) {
+  .manual-table-grid {
+    grid-template-columns: 1fr;
   }
 }
