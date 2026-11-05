@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TG-07 // QUANTIZED POLYPHONIC GLIDE SYNTHESIZER</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="braun-chassis">
+    <!-- TOP HEADER PLATE: Model Designation, Speaker Grille, Power & WebMIDI Status -->
+    <header class="top-plate">
+      <div class="brand-block">
+        <div class="model-badge">
+          <span class="brand-mark">BRAUN / AUDIO LAB</span>
+          <h1 class="model-title">TG-07 <span>POLYPHONIC GLIDE INSTRUMENT</span></h1>
+        </div>
+        <div class="speaker-grille" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <div class="transport-cluster">
+        <div class="status-pill">
+          <span id="power-led" class="status-led"></span>
+          <span class="status-label">AUDIO ENGINE</span>
+        </div>
+        <div class="status-pill">
+          <span id="midi-led" class="status-led"></span>
+          <span id="midi-status-badge" class="status-label">CHECKING MIDI...</span>
+        </div>
+        <button id="latch-toggle" type="button" class="rams-toggle-switch active-orange">
+          <span class="switch-dot"></span>
+          <span class="switch-caption">LATCH <strong class="toggle-state">ON (HOLD)</strong></span>
+        </button>
+        <button id="stop-btn" type="button" class="rams-stop-btn" title="Stop Clock & Release Voices (Space)">
+          <span class="stop-square"></span>
+          <span>RELEASE</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- UPPER DISPLAY MODULE: Oscilloscope Voice-Leading Screen + Active/Cued Readout -->
+    <section class="display-module">
+      <div class="crt-bezel">
+        <div class="crt-top-bar">
+          <div class="readout-box active-box">
+            <span class="readout-tag"><span class="dot-green"></span> ACTIVE LATCHED CHORD</span>
+            <div id="active-chord-readout" class="readout-chord">STANDBY</div>
+            <div id="active-notes-readout" class="readout-sub">SELECT CHORD OR PRESS SPACE</div>
+          </div>
+
+          <div class="arrow-divider">→</div>
+
+          <div class="readout-box cued-box">
+            <span class="readout-tag">
+              <span id="cued-led" class="dot-amber"></span> NEXT GRID PRE-INPUT (CUE)
+            </span>
+            <div id="cued-chord-readout" class="readout-chord cued-text">—</div>
+            <div id="cued-sub-readout" class="readout-sub">PRE-INPUT NEXT CHORD ANYTIME</div>
+          </div>
+
+          <div class="clock-strip-box">
+            <div class="clock-header-row">
+              <span id="grid-countdown-text" class="clock-mono">CLOCK IDLE</span>
+              <div id="beat-leds" class="beat-leds"></div>
+            </div>
+            <div class="progress-track">
+              <div id="grid-progress-fill" class="progress-fill"></div>
+            </div>
+            <div id="progression-presets" class="preset-seq-row"></div>
+          </div>
+        </div>
+
+        <!-- 7-Voice Polyphonic Trajectory Scope -->
+        <div class="scope-wrapper">
+          <canvas id="glide-scope"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- MIDDLE CONTROL DECK: Clock/Grid, Glide Curve, Voice Stagger/Arp, Synth Tone & MIDI -->
+    <section class="control-deck">
+      <!-- Module 1: Master Clock & Quantize Grid -->
+      <div class="deck-panel">
+        <div class="panel-header">
+          <span class="panel-num">01</span>
+          <h2>TEMPO &amp; QUANTIZE GRID</h2>
+        </div>
+
+        <div class="control-group">
+          <label class="group-label">GRID UNIT (NEXT-BAR SYNC)</label>
+          <div id="grid-selector" class="segmented-row"></div>
+        </div>
+
+        <div class="control-group">
+          <label class="group-label">PRE-INPUT GLIDE TRIGGER</label>
+          <div id="trigger-timing-selector" class="segmented-row">
+            <button type="button" class="rams-seg-btn active" data-timing="on-grid" title="Start gliding on Beat 1 of the next Grid">START ON GRID</button>
+            <button type="button" class="rams-seg-btn" data-timing="land-on-grid" title="Start gliding early so voices arrive on Beat 1">LAND ON GRID</button>
+            <button type="button" class="rams-seg-btn" data-timing="immediate" title="Unquantized immediate glide">IMMEDIATE</button>
+          </div>
+        </div>
+
+        <div class="dial-grid two-cols">
+          <div class="dial-unit">
+            <div class="dial-head">
+              <span>TEMPO</span>
+              <strong id="bpm-val">108 BPM</strong>
+            </div>
+            <input id="bpm-slider" type="range" min="60" max="170" value="108" class="rams-slider" />
+          </div>
+          <div class="dial-unit">
+            <div class="dial-head">
+              <span>GLIDE LENGTH</span>
+              <strong id="glide-ratio-val">45% GRID</strong>
+            </div>
+            <input id="glide-ratio-slider" type="range" min="8" max="95" value="45" class="rams-slider" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 2: Exponential Curve & Arp/Strum Motion -->
+      <div class="deck-panel">
+        <div class="panel-header">
+          <span class="panel-num">02</span>
+          <h2>GLIDE CURVE &amp; VOICE MOTION</h2>
+        </div>
+
+        <div class="curve-row">
+          <div class="curve-controls">
+            <label class="group-label">INTERPOLATION CURVE</label>
+            <div id="curve-type-selector" class="segmented-row">
+              <button type="button" class="rams-seg-btn active" data-curve="exp-out">EXP OUT</button>
+              <button type="button" class="rams-seg-btn" data-curve="exp-in">EXP IN</button>
+              <button type="button" class="rams-seg-btn" data-curve="s-curve">S-CURVE</button>
+              <button type="button" class="rams-seg-btn" data-curve="linear">LINEAR</button>
+            </div>
+
+            <label class="group-label" style="margin-top:10px;">VOICE STAGGER / ARP GLIDE</label>
+            <div id="arp-motion-selector" class="segmented-row">
+              <button type="button" class="rams-seg-btn" data-arp="simultaneous">UNISON</button>
+              <button type="button" class="rams-seg-btn active" data-arp="strum-up">STRUM ↑</button>
+              <button type="button" class="rams-seg-btn" data-arp="strum-down">STRUM ↓</button>
+              <button type="button" class="rams-seg-btn" data-arp="inner-arp">ARP WAVE</button>
+            </div>
+          </div>
+
+          <div class="curve-mini-screen">
+            <canvas id="curve-preview"></canvas>
+            <span class="curve-screen-caption">CURVE RESPONSE</span>
+          </div>
+        </div>
+
+        <div class="dial-grid two-cols">
+          <div class="dial-unit">
+            <div class="dial-head">
+              <span>CURVE TENSION</span>
+              <strong id="curve-tension-val">68%</strong>
+            </div>
+            <input id="curve-tension-slider" type="range" min="10" max="100" value="68" class="rams-slider" />
+          </div>
+          <div class="dial-unit">
+            <div class="dial-head">
+              <span>STRUM DELAY</span>
+              <strong id="strum-val">35 ms</strong>
+            </div>
+            <input id="strum-slider" type="range" min="0" max="130" value="35" class="rams-slider" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Module 3: Pad Oscillator Engine & WebMIDI Routing -->
+      <div class="deck-panel">
+        <div class="panel-header">
+          <span class="panel-num">03</span>
+          <h2>PAD SYNTHESIZER &amp; WEBMIDI</h2>
+        </div>
+
+        <div class="select-grid">
+          <div class="select-field">
+            <label for="sound-preset-select">VOICE TIMBRE</label>
+            <select id="sound-preset-select" class="rams-select"></select>
+          </div>
+          <div class="select-field">
+            <label for="midi-mode-select">MIDI KEY MODE</label>
+            <select id="midi-mode-select" class="rams-select">
+              <option value="split">SPLIT (BELOW C3=ROOT / C3+=CHORD)</option>
+              <option value="detect">POLY CHORD AUTO-DETECT</option>
+            </select>
+          </div>
+          <div class="select-field">
+            <label for="midi-in-select">MIDI INPUT</label>
+            <select id="midi-in-select" class="rams-select">
+              <option value="all">ALL MIDI INPUTS</option>
+            </select>
+          </div>
+          <div class="select-field">
+            <label for="midi-out-select">MIDI OUTPUT</label>
+            <select id="midi-out-select" class="rams-select">
+              <option value="none">NO MIDI OUT</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="dial-grid four-cols">
+          <div class="dial-unit">
+            <div class="dial-head">
+              <span>LPF CUTOFF</span>
+              <strong id="cutoff-val">1850 Hz</strong>
+            </div>
+            <input id="cutoff-slider" type="range" min="280" max="6500" value="1850" class="rams-slider" />
+          </div>
+          <div class="dial-unit">
+            <div class="dial-head">
+              <span>DETUNE</span>
+              <strong id="detune-val">11 ct</strong>
+            </div>
+            <input id="detune-slider" type="range" min="0" max="35" value="11" class="rams-slider" />
+          </div>
+          <div class="dial-unit">
+            <div class="dial-head">
+              <span>SPACE / REV</span>
+              <strong id="space-val">32%</strong>
+            </div>
+            <input id="space-slider" type="range" min="0" max="85" value="32" class="rams-slider" />
+          </div>
+          <div class="dial-unit">
+            <div class="dial-head">
+              <span>OUTPUT</span>
+              <strong id="volume-val">75%</strong>
+            </div>
+            <input id="volume-slider" type="range" min="0" max="100" value="75" class="rams-slider" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOWER KEYBOARD MATRIX: 12 Root Selector Keys + 24 Chord Quality Mechanical Switches -->
+    <section class="keyboard-deck">
+      <div class="root-section">
+        <div class="section-caption">
+          <span>04 // ROOT PITCH SELECTOR</span>
+          <span class="hint-text">KEYS: A–G (Z=♭, X=♯) OR CLICK TO CUE ROOT CHANGE</span>
+        </div>
+        <div id="root-buttons" class="root-button-row"></div>
+      </div>
+
+      <div class="chord-section">
+        <div class="section-caption">
+          <span>05 // 24 HARMONIC VOICING SELECTORS (LATCH &amp; NEXT-GRID PRE-INPUT)</span>
+          <span class="hint-text">GREEN LED = PLAYING · BLINKING AMBER LED = CUED FOR NEXT BAR</span>
+        </div>
+        <div id="chord-buttons" class="chord-button-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
