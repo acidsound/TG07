@@ -61,6 +61,21 @@ export const SOUND_PRESETS = {
   },
 };
 
+function safeCancelAudioParam(param, time) {
+  if (!param) return;
+  try {
+    if (typeof param.cancelAndHoldAtTime === 'function') {
+      param.cancelAndHoldAtTime(time);
+    } else {
+      param.cancelScheduledValues(time);
+    }
+  } catch {
+    try {
+      param.cancelScheduledValues(time);
+    } catch {}
+  }
+}
+
 export class GlideAudioEngine {
   constructor() {
     this.ctx = null;
@@ -389,13 +404,13 @@ export class GlideAudioEngine {
       v.glideStartTime = now;
       v.glideDuration = 0.001;
 
-      v.osc1.frequency.cancelScheduledValues(now);
-      v.osc2.frequency.cancelScheduledValues(now);
+      safeCancelAudioParam(v.osc1.frequency, now);
+      safeCancelAudioParam(v.osc2.frequency, now);
       v.osc1.frequency.setValueAtTime(freq, now);
       v.osc2.frequency.setValueAtTime(v.isBass ? freq * 0.5 : freq, now);
 
       const level = v.isBass ? 0.23 : 0.145;
-      v.voiceGain.gain.cancelScheduledValues(now);
+      safeCancelAudioParam(v.voiceGain.gain, now);
       v.voiceGain.gain.setTargetAtTime(level, now, 0.06);
     }
   }
@@ -421,7 +436,7 @@ export class GlideAudioEngine {
     // Subtle filter breath on chord transition so the bar transition feels alive
     const cutoff = this.params.cutoffHz;
     const boost = Math.min(7500, cutoff * (1 + this.params.accentPulse * 0.75));
-    this.globalFilter.frequency.cancelScheduledValues(startTime);
+    safeCancelAudioParam(this.globalFilter.frequency, startTime);
     this.globalFilter.frequency.setValueAtTime(cutoff, startTime);
     this.globalFilter.frequency.linearRampToValueAtTime(boost, startTime + 0.045);
     this.globalFilter.frequency.exponentialRampToValueAtTime(Math.max(120, cutoff), startTime + Math.max(0.25, baseDuration * 0.95));
@@ -470,17 +485,23 @@ export class GlideAudioEngine {
     }
 
     try {
-      v.osc1.frequency.cancelScheduledValues(safeStart);
-      v.osc2.frequency.cancelScheduledValues(safeStart);
-      v.osc1.frequency.setValueAtTime(curve1[0], safeStart);
-      v.osc2.frequency.setValueAtTime(curve2[0], safeStart);
+      safeCancelAudioParam(v.osc1.frequency, safeStart);
+      safeCancelAudioParam(v.osc2.frequency, safeStart);
       v.osc1.frequency.setValueCurveAtTime(curve1, safeStart, safeDur);
       v.osc2.frequency.setValueCurveAtTime(curve2, safeStart, safeDur);
     } catch {
-      // Fallback if WebAudio rejects overlapping curve at exact boundary
-      const endFreq = midiToFreq(toMidi);
-      v.osc1.frequency.setTargetAtTime(endFreq, safeStart, safeDur * 0.3);
-      v.osc2.frequency.setTargetAtTime(v.isBass ? endFreq * 0.5 : endFreq, safeStart, safeDur * 0.3);
+      // Robust fallback if WebAudio setValueCurveAtTime rejects (e.g. edge-case boundary overlap)
+      try {
+        safeCancelAudioParam(v.osc1.frequency, safeStart);
+        safeCancelAudioParam(v.osc2.frequency, safeStart);
+        const endFreq = midiToFreq(toMidi);
+        v.osc1.frequency.linearRampToValueAtTime(endFreq, safeStart + safeDur);
+        v.osc2.frequency.linearRampToValueAtTime(v.isBass ? endFreq * 0.5 : endFreq, safeStart + safeDur);
+      } catch {
+        const endFreq = midiToFreq(toMidi);
+        v.osc1.frequency.value = endFreq;
+        v.osc2.frequency.value = v.isBass ? endFreq * 0.5 : endFreq;
+      }
     }
 
     v.currentMidi = toMidi;
@@ -494,7 +515,7 @@ export class GlideAudioEngine {
     const now = this.ctx.currentTime;
     this.isGateOpen = false;
     for (const v of this.voices) {
-      v.voiceGain.gain.cancelScheduledValues(now);
+      safeCancelAudioParam(v.voiceGain.gain, now);
       v.voiceGain.gain.setTargetAtTime(0, now, 0.09);
       v.voiceGain.gain.setValueAtTime(0, now + 0.5);
     }

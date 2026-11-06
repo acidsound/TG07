@@ -160,9 +160,7 @@ export class QuantizedGlideScheduler {
       ? computeVoiceLedVoicing(this.activeChord.voicing, first.root, first.typeId, this.octaveOffset, this.smoothVoiceLeading)
       : buildInitialVoicing(first.root, first.typeId, this.octaveOffset);
 
-    if (!this.isRunning) {
-      this.startClock();
-    }
+    this.startClock();
     this.previousVoicing = [...voicing];
     this.activeChord = { root: first.root, typeId: first.typeId, voicing };
     this.audio.engageVoicesImmediate(voicing);
